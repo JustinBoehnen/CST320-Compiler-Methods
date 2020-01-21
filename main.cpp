@@ -1,29 +1,37 @@
 //**************************************
 // main.cpp
 //
-// main routine for PASCAL compiler.
+// Main routine for PASCAL compiler.
 // This version only runs the lexer
 //
 // Author: Phil Howard 
 // phil.howard@oit.edu
 //
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <iostream>
 #include <fstream>
+#include "cSymbol.h"
+#include "cSymbolTable.h"
 #include "lex.h"
+#include "tokens.h"
 
-// Program to test a scanner
+cSymbolTable g_symbolTable;
+long long cSymbol::nextId = 0;
+yylval_t yylval;
+
+// Program to test a symbol table implementation
 // Command line arguments:
 //     Input file:  Default = stdin
-//     Output file: Default = /dev/tty
+//     Output file: Default = stdout
 int main(int argc, char **argv)
 {
     const char *outfile_name;
     int result = 0;
     int token;
+
+    std::cout << "Philip Howard" << std::endl;
 
     if (argc > 1)
     {
@@ -55,12 +63,20 @@ int main(int argc, char **argv)
         }
     }
 
+    std::cout << "<program>\n";
+
     token = yylex();
     while (token != 0)
     {
-        std::cout << token << ":" << yytext << "\n";
+        // if we found an identifier, print it out
+        if (token == IDENTIFIER) 
+            std::cout << yylval.symbol->ToString() << "\n";
+        // else
+        //     std::cout << token << ":" << yytext << "\n";
         token = yylex();
     }
+
+    std::cout << "</program>\n";
 
     return result;
 }

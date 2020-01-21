@@ -10,12 +10,17 @@
 // Date: Dec. 6, 2017
 //
 
+#include "lex.h"
+#include "cSymbolTable.h"
 #include "tokens.h"
 
     // comment out the other line to generate debug info
 #define DO_RETURN(a) return (a)
 //#define DO_RETURN(a) return Return(a)
 int Return(int val);
+void Find();
+extern yylval_t yylval;
+extern cSymbolTable g_symbolTable;
 
 %}
 
@@ -35,8 +40,14 @@ VARID               [a-zA-Z][a-zA-Z0-9]*
 "PROGRAM"                   DO_RETURN(PROGRAM);
 "PROCEDURE"                 DO_RETURN(PROCEDURE);
 "FUNCTION"                  DO_RETURN(FUNCTION);
-"BEGIN"                     DO_RETURN(OPEN);
-"END"                       DO_RETURN(CLOSE);
+"BEGIN"                     { 
+                                g_symbolTable.IncreaseScope(); 
+                                DO_RETURN(OPEN); 
+                            }
+"END"                       { 
+                                g_symbolTable.DecreaseScope(); 
+                                DO_RETURN(CLOSE); 
+                            }
 "IF"                        DO_RETURN(IF);
 "THEN"                      DO_RETURN(THEN);
 "ELSE"                      DO_RETURN(ELSE);
@@ -70,7 +81,10 @@ VARID               [a-zA-Z][a-zA-Z0-9]*
 "NOT"                       DO_RETURN(NOT);
 {PUNCTUATION}               DO_RETURN(yytext[0]);
 {COMMENT}                   {}
-{VARID}                     DO_RETURN(IDENTIFIER);
+{VARID}                     { 
+                                Find(); 
+                                DO_RETURN(IDENTIFIER); 
+                            }
 {INTCONST}                  DO_RETURN(INT_VAL);
 {REALCONST}                 DO_RETURN(REAL_VAL);
 "\n"                        {}
@@ -86,3 +100,15 @@ int Return(int val)
     return val;
 }
 
+void Find(){
+    string str = yytext;
+
+    for(int i = 0; str[i] != '\0'; ++i) 
+        str[i] = tolower(str[i]);
+
+    cSymbol* temp = g_symbolTable.LocalFind(str);
+    if(!temp)
+        yylval.symbol = g_symbolTable.Insert(str);
+    else
+        yylval.symbol = temp;   
+}

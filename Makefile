@@ -5,7 +5,7 @@
 # phil.howard@oit.edu
 #
 
-COPTS=-Wall -g -c  -O0 -std=c++11
+COPTS=-Wall -g -c -O0 -std=c++11
 OBJS=main.o \
 	 pascallex.o \
 
@@ -16,6 +16,7 @@ clean:
 	rm -f pascallex.c
 	rm -f pascal
 	rm -f out
+	rm -f *.xml
 
 .c.o:
 	g++ $(COPTS) $? -o $@
