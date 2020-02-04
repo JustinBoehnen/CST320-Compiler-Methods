@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<program>
+  <sym id="4" name="test5a"/>
+  <block>
+    <decls>
+      <var_decl>
+        <type name="integer" size="4" isFloat="0"/>
+        <sym id="5" name="aaa"/>
+      </var_decl>
+    </decls>
+    <stmts>
+      <assign>
+        <varref>
+          <sym id="5" name="aaa"/>
+        </varref>
+        <INTEGER value="5"/>
+      </assign>
+      <assign>
+        <varref>
+          <sym id="5" name="aaa"/>
+        </varref>
+        <sym id="6" name="func1"/>
+      </assign>
+    </stmts>
+  </block>
+</program>

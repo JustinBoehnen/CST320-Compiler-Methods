@@ -22,7 +22,6 @@ typedef union
     cSymbol *symbol;
 } yylval_t;
 
-extern yylval_t yylval;     // Semantic value of current token
 extern char *yytext;        // text of the current token
 extern int yylineno;        // line number of current token
 extern FILE *yyin;          // input file for lexer
