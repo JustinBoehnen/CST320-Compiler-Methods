@@ -1,4 +1,10 @@
 #pragma once
+//*******************************************
+// Author: Justin Boehnen
+// Purpose: ast node represents the declaration of
+//          multiple variables in the form:
+//          aaa, bbb : integer
+//*******************************************
 
 #include "cDeclsNode.h"
 #include "cVarDeclNode.h"

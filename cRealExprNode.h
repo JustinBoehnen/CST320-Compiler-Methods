@@ -1,4 +1,8 @@
 #pragma once
+//*******************************************
+// Author: Justin Boehnen
+// Purpose: ast node represents real (double) number values
+//*******************************************
 
 #include "cAstNode.h"
 #include "cExprNode.h"

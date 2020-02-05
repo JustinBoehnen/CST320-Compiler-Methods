@@ -4,11 +4,7 @@
 //
 // Scanner definition file for CST 320 project
 //
-// Author: Phil Howard 
-// phil.howard@oit.edu
-//
-// Date: Dec. 6, 2017
-//
+// Author: Justin Boehnen
 
 #include "lex.h"
 #include "cSymbolTable.h"

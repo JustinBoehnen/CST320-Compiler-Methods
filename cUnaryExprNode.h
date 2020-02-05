@@ -1,3 +1,9 @@
+#pragma once
+//*******************************************
+// Author: Justin Boehnen
+// Purpose: ast node represents unary expressions
+//*******************************************
+
 #include "cAstNode.h"
 #include "cExprNode.h"
 

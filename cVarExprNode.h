@@ -1,4 +1,8 @@
 #pragma once
+//*******************************************
+// Author: Justin Boehnen
+// Purpose: ast node represents variable expression
+//*******************************************
 
 #include "cSymbol.h"
 #include "cExprNode.h"

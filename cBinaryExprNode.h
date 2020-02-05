@@ -1,3 +1,8 @@
+#pragma once
+//*******************************************
+// Author: Justin Boehnen
+// Purpose: ast node represents binary expression
+//*******************************************
 #include "cAstNode.h"
 #include "cExprNode.h"
 

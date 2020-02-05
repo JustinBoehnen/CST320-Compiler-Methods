@@ -1,5 +1,8 @@
-// Justin Boehnen
 #pragma once
+//*******************************************
+// Author: Justin Boehnen
+// Purpose: Symbol Table for CST320 compiler
+//*******************************************
 
 #include <vector>
 #include <unordered_map>

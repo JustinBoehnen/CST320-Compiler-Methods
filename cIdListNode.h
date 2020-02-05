@@ -1,4 +1,9 @@
 #pragma once
+//*******************************************
+// Author: Justin Boehnen
+// Purpose: ast node represents list of expressions
+//          in var declarations
+//*******************************************
 
 #include "cAstNode.h"
 #include "cSymbol.h"

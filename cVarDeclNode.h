@@ -1,4 +1,8 @@
 #pragma once
+//*******************************************
+// Author: Justin Boehnen
+// Purpose: ast node represents variable declaration
+//*******************************************
 #include "cDeclNode.h"
 #include "cSymbol.h"
 #include "cBaseTypeNode.h"

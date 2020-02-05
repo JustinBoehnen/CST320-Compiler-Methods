@@ -1,4 +1,8 @@
 #pragma once
+//*******************************************
+// Author: Justin Boehnen
+// Purpose: ast node represents variable assignments (:=)
+//*******************************************
 #include "cStmtNode.h"
 #include "cVarExprNode.h"
 #include "cExprNode.h"

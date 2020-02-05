@@ -4,9 +4,7 @@
 //
 // Parser definition file. bison uses this file to generate the parser.
 //
-// Author: Phil Howard 
-// phil.howard@oit.edu
-//
+// Author: Justin Boehnen
 
 #include <iostream>
 #include "lex.h"

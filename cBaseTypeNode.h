@@ -1,4 +1,9 @@
 #pragma once
+//*******************************************
+// Author: Justin Boehnen
+// Purpose: ast node represents and declares size of
+//          base types: integer, real, and char
+//*******************************************
 #include "cDeclNode.h"
 
 class cBaseTypeNode : public cDeclNode
