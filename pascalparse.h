@@ -114,9 +114,11 @@ union YYSTYPE
     cBaseTypeNode*  base_type_node;
     cVarExprNode*   var_expr_node;
     cProcDeclNode*  proc_decl_node;
+    cRangeDeclNode* range_decl_node;
+    cFuncDeclNode*  func_decl_node;
     
 
-#line 120 "pascalparse.h" /* yacc.c:1909  */
+#line 122 "pascalparse.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

@@ -74,12 +74,32 @@ class cSymbol : public cAstNode
         // return the name of the cSymbol
         string GetName() { return m_name; }
 
+        void SetDecl(cDeclNode* decl)
+        {
+            _decl = decl;
+        }
+
+        cDeclNode* GetDecl()
+        {
+            return _decl;
+        }
+
+        void SetIsType(bool isType)
+        {
+            _isType = isType;   
+        }
+
+        bool GetIsType()
+        {
+            return _isType;
+        }
+
         int GetType() { return _tokenType; }
-        cBaseTypeNode* GetDecl() { return dynamic_cast<cBaseTypeNode*>(_decl); }
     protected:
         static long long nextId;    // used to generate unique IDs
         long long m_id;             // ID for this cSymbol
         string m_name;              // name for this cSymbol
         int _tokenType;
         cDeclNode* _decl;
+        bool _isType;
 };

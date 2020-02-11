@@ -1,2 +1,15 @@
-ERROR: syntax error at symbol BEGIN on line 20
-1 Errors in compile
+<program><sym id="4" name="test7" /><block><decls><var_decl><record><sym id="5" name="record1" /><var_decls><var_decl><type name="integer" size="4" isFloat="0" /><sym id="6" name="field1" /></var_decl>
+<var_decl><type name="integer" size="4" isFloat="0" /><sym id="7" name="field2" /></var_decl>
+<var_decl><type name="real" size="8" isFloat="1" /><sym id="8" name="field3" /></var_decl>
+</var_decls>
+</record>
+<sym id="9" name="var1" /></var_decl>
+</decls>
+<stmts><assign><varref><sym id="9" name="var1" /><sym id="10" name="field1" /></varref>
+<INTEGER value="5" /></assign>
+<assign><varref><sym id="9" name="var1" /><sym id="11" name="field2" /></varref>
+<INTEGER value="3" /></assign>
+</stmts>
+</block>
+</program>
+

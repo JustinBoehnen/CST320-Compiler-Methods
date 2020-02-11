@@ -5,23 +5,18 @@
 
 extern cSymbolTable g_symbolTable;
 
-class cFuncDeclNode : public cDeclNode
+class cRecordDeclNode : public cDeclNode
 {
 public:
-    cFuncDeclNode(cSymbol* header) : cDeclNode()
+    cRecordDeclNode(cSymbol* header, cVarDeclsNode* decls) : cDeclNode()
     {
         if(g_symbolTable.GlobalFind(header->GetName()))
             header = new cSymbol(header->GetName());
         
         AddChild(g_symbolTable.Insert(header));
+        AddChild(decls);
     }
 
-    void AddTypeParameters(cDeclNode* type, cDeclsNode* params)
-    {
-        AddChild(type);
-        AddChild(params);
-    }
-
-    virtual string NodeType() { return string("func"); }
+    virtual string NodeType() { return string("record"); }
     virtual void Visit(cVisitor* visitor) { visitor->Visit(this); }
 };

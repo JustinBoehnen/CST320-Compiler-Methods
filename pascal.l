@@ -29,7 +29,7 @@ extern cSymbolTable g_symbolTable;
     /* definitions go here. PUNCTUATION is an example. */
 PUNCTUATION         [:\(\)\[\];,\.+\-*/=^<>]
 INTCONST            [0-9]*
-REALCONST           [0-9]*\.[0-9][0-9]*
+REALCONST           [0-9]+\.[0-9][0-9]*
 COMMENT             \{.*\}
 IDENT               [a-zA-Z][a-zA-Z0-9]*
 %%
@@ -74,5 +74,5 @@ int Find(){
     else
         yylval.symbol = temp;
 
-    return yylval.symbol->GetType();
+    return yylval.symbol->GetIsType() ? TYPE_ID : yylval.symbol->GetType();
 }

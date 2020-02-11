@@ -15,6 +15,8 @@ public:
         AddChild(sym);
     }
 
+    void AddVariable(cVarExprNode* var) { AddAllChildren(var); }
+    void AddExpr(cExprListNode* expr) { AddChild(expr); }
     virtual string NodeType() { return string("varref"); }
     virtual void Visit(cVisitor* visitor) { visitor->Visit(this); }
 };

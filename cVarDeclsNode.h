@@ -9,12 +9,12 @@
 #include "cDeclsNode.h"
 #include "cVarDeclNode.h"
 #include "cIdListNode.h"
-#include "cBaseTypeNode.h"
+#include "cDeclNode.h"
 
 class cVarDeclsNode : public cDeclsNode
 {
 public:
-    cVarDeclsNode(cIdListNode* ids, cBaseTypeNode* type) : cDeclsNode()
+    cVarDeclsNode(cIdListNode* ids, cDeclNode* type) : cDeclsNode()
     {
         int index = 0;
         cSymbol* temp = ids->GetSymbol(index);
@@ -26,7 +26,7 @@ public:
         }
     }
 
-    void AddVarDecls(cIdListNode* ids, cBaseTypeNode* type)
+    void AddVarDecls(cIdListNode* ids, cDeclNode* type)
     {
         int index = 0;
         cSymbol* temp = ids->GetSymbol(index);

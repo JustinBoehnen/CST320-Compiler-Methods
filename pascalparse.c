@@ -180,9 +180,11 @@ union YYSTYPE
     cBaseTypeNode*  base_type_node;
     cVarExprNode*   var_expr_node;
     cProcDeclNode*  proc_decl_node;
+    cRangeDeclNode* range_decl_node;
+    cFuncDeclNode*  func_decl_node;
     
 
-#line 186 "pascalparse.c" /* yacc.c:355  */
+#line 188 "pascalparse.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -212,14 +214,14 @@ int yyparse (void);
 #endif /* !YY_YY_PASCALPARSE_H_INCLUDED  */
 
 /* Copy the second part of user declarations.  */
-#line 38 "pascal.y" /* yacc.c:358  */
+#line 40 "pascal.y" /* yacc.c:358  */
 
     int yyerror(const char *msg);
 
     cAstNode *yyast_root;
     extern cSymbolTable g_symbolTable;
 
-#line 223 "pascalparse.c" /* yacc.c:358  */
+#line 225 "pascalparse.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -522,16 +524,16 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   113,   113,   121,   126,   132,   142,   145,   146,   148,
-     150,   153,   154,   156,   158,   160,   162,   164,   166,   168,
-     171,   174,   175,   180,   182,   184,   186,   188,   198,   200,
-     204,   206,   208,   210,   212,   214,   219,   221,   223,   226,
-     228,   233,   236,   241,   246,   248,   251,   253,   255,   257,
-     259,   262,   267,   270,   272,   274,   276,   278,   280,   282,
-     284,   286,   288,   290,   292,   294,   297,   302,   305,   306,
-     309,   312,   314,   316,   319,   322,   324,   326,   328,   330,
-     332,   334,   337,   339,   341,   343,   345,   348,   350,   352,
-     354,   356,   358,   361,   363,   365,   367,   369,   371
+       0,   115,   115,   123,   128,   134,   146,   149,   150,   155,
+     157,   160,   161,   166,   168,   170,   177,   184,   189,   191,
+     194,   197,   198,   203,   205,   207,   209,   211,   221,   223,
+     227,   229,   234,   239,   241,   243,   248,   253,   255,   258,
+     260,   265,   268,   273,   278,   280,   283,   285,   287,   292,
+     294,   297,   302,   305,   307,   309,   311,   313,   315,   317,
+     319,   321,   323,   325,   327,   329,   332,   337,   340,   341,
+     344,   347,   352,   357,   360,   363,   365,   367,   369,   371,
+     373,   375,   378,   380,   382,   384,   386,   389,   391,   393,
+     395,   397,   399,   402,   404,   406,   408,   410,   412
 };
 #endif
 
@@ -1559,7 +1561,7 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 114 "pascal.y" /* yacc.c:1646  */
+#line 116 "pascal.y" /* yacc.c:1646  */
     { (yyval.program_node) = new cProgramNode((yyvsp[-2].symbol), (yyvsp[-1].block_node));
                                   yyast_root = (yyval.program_node);
                                   if (yynerrs == 0) 
@@ -1567,631 +1569,668 @@ yyreduce:
                                   else
                                       YYABORT;
                                 }
-#line 1571 "pascalparse.c" /* yacc.c:1646  */
+#line 1573 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 122 "pascal.y" /* yacc.c:1646  */
+#line 124 "pascal.y" /* yacc.c:1646  */
     {  
                                     g_symbolTable.IncreaseScope();
                                     (yyval.symbol) = (yyvsp[-1].symbol); 
                                 }
-#line 1580 "pascalparse.c" /* yacc.c:1646  */
+#line 1582 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 127 "pascal.y" /* yacc.c:1646  */
+#line 129 "pascal.y" /* yacc.c:1646  */
     { 
                                     (yyval.block_node) = new cBlockNode((yyvsp[-3].decls_node), (yyvsp[-1].stmts_node)); 
                                     g_symbolTable.DecreaseScope();
                                 }
-#line 1589 "pascalparse.c" /* yacc.c:1646  */
+#line 1591 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 133 "pascal.y" /* yacc.c:1646  */
+#line 135 "pascal.y" /* yacc.c:1646  */
     { 
-                                    if((yyvsp[-3].ast_node) != nullptr || (yyvsp[-2].ast_node) != nullptr
+                                    if((yyvsp[-3].decls_node) != nullptr || (yyvsp[-2].decls_node) != nullptr
                                     || (yyvsp[-1].var_decls_node) != nullptr || (yyvsp[0].decls_node) != nullptr)
                                     {
                                         (yyval.decls_node) = new cDeclsNode();
+                                        (yyval.decls_node)->AddDecls((yyvsp[-3].decls_node));
+                                        (yyval.decls_node)->AddDecls((yyvsp[-2].decls_node));
                                         (yyval.decls_node)->AddDecls((yyvsp[-1].var_decls_node));
                                         (yyval.decls_node)->AddDecls((yyvsp[0].decls_node));
                                     }
                                 }
-#line 1603 "pascalparse.c" /* yacc.c:1646  */
+#line 1607 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 143 "pascal.y" /* yacc.c:1646  */
-    { }
-#line 1609 "pascalparse.c" /* yacc.c:1646  */
+#line 147 "pascal.y" /* yacc.c:1646  */
+    { (yyval.decls_node) = (yyvsp[-1].decls_node); }
+#line 1613 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 145 "pascal.y" /* yacc.c:1646  */
-    { (yyval.ast_node) = nullptr; }
-#line 1615 "pascalparse.c" /* yacc.c:1646  */
+#line 149 "pascal.y" /* yacc.c:1646  */
+    { (yyval.decls_node) = nullptr; }
+#line 1619 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 147 "pascal.y" /* yacc.c:1646  */
-    { }
-#line 1621 "pascalparse.c" /* yacc.c:1646  */
+#line 151 "pascal.y" /* yacc.c:1646  */
+    { 
+                                    (yyval.decls_node) = (yyvsp[-4].decls_node);
+                                    (yyval.decls_node)->AddDecl(new cConstDeclNode((yyvsp[-2].symbol), (yyvsp[0].expr_node)));
+                                }
+#line 1628 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 149 "pascal.y" /* yacc.c:1646  */
-    { }
-#line 1627 "pascalparse.c" /* yacc.c:1646  */
+#line 156 "pascal.y" /* yacc.c:1646  */
+    { (yyval.decls_node) = new cDeclsNode(new cConstDeclNode((yyvsp[-2].symbol), (yyvsp[0].expr_node))); }
+#line 1634 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 151 "pascal.y" /* yacc.c:1646  */
-    { }
-#line 1633 "pascalparse.c" /* yacc.c:1646  */
+#line 158 "pascal.y" /* yacc.c:1646  */
+    { (yyval.decls_node) = (yyvsp[0].decls_node); }
+#line 1640 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 153 "pascal.y" /* yacc.c:1646  */
-    { (yyval.ast_node) = nullptr; }
-#line 1639 "pascalparse.c" /* yacc.c:1646  */
+#line 160 "pascal.y" /* yacc.c:1646  */
+    { (yyval.decls_node) = nullptr; }
+#line 1646 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 155 "pascal.y" /* yacc.c:1646  */
-    { }
-#line 1645 "pascalparse.c" /* yacc.c:1646  */
+#line 162 "pascal.y" /* yacc.c:1646  */
+    { 
+                                    (yyval.decls_node) = (yyvsp[-1].decls_node);
+                                    (yyval.decls_node)->AddDecl((yyvsp[0].decl_node)); 
+                                }
+#line 1655 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 157 "pascal.y" /* yacc.c:1646  */
-    { }
-#line 1651 "pascalparse.c" /* yacc.c:1646  */
+#line 167 "pascal.y" /* yacc.c:1646  */
+    { (yyval.decls_node) = new cDeclsNode((yyvsp[0].decl_node)); }
+#line 1661 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 159 "pascal.y" /* yacc.c:1646  */
+#line 169 "pascal.y" /* yacc.c:1646  */
     {}
-#line 1657 "pascalparse.c" /* yacc.c:1646  */
+#line 1667 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 161 "pascal.y" /* yacc.c:1646  */
-    { }
-#line 1663 "pascalparse.c" /* yacc.c:1646  */
+#line 171 "pascal.y" /* yacc.c:1646  */
+    { 
+                                    (yyvsp[-4].symbol)->SetIsType(true);
+                                    (yyval.decl_node) = new cRecordDeclNode((yyvsp[-4].symbol), (yyvsp[-1].var_decls_node)); 
+                                    (yyvsp[-4].symbol)->SetDecl((yyval.decl_node));
+                                }
+#line 1677 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 163 "pascal.y" /* yacc.c:1646  */
-    { }
-#line 1669 "pascalparse.c" /* yacc.c:1646  */
-    break;
-
-  case 17:
-#line 165 "pascal.y" /* yacc.c:1646  */
-    { }
-#line 1675 "pascalparse.c" /* yacc.c:1646  */
-    break;
-
-  case 18:
-#line 167 "pascal.y" /* yacc.c:1646  */
-    { }
-#line 1681 "pascalparse.c" /* yacc.c:1646  */
-    break;
-
-  case 19:
-#line 169 "pascal.y" /* yacc.c:1646  */
-    { }
+#line 178 "pascal.y" /* yacc.c:1646  */
+    { 
+                                    (yyvsp[-8].symbol)->SetIsType(true);
+                                    (yyval.decl_node) = new cArrayDeclNode((yyvsp[-8].symbol), (yyvsp[-1].symbol)->GetDecl(), (yyvsp[-4].decls_node));
+                                    (yyvsp[-8].symbol)->SetDecl((yyval.decl_node));
+                                }
 #line 1687 "pascalparse.c" /* yacc.c:1646  */
     break;
 
-  case 20:
-#line 172 "pascal.y" /* yacc.c:1646  */
-    { (yyval.var_decls_node) = (yyvsp[0].var_decls_node); }
-#line 1693 "pascalparse.c" /* yacc.c:1646  */
-    break;
-
-  case 21:
-#line 174 "pascal.y" /* yacc.c:1646  */
-    { (yyval.var_decls_node) = nullptr; }
-#line 1699 "pascalparse.c" /* yacc.c:1646  */
-    break;
-
-  case 22:
-#line 176 "pascal.y" /* yacc.c:1646  */
-    {
-                                    (yyval.var_decls_node) = (yyvsp[-1].var_decls_node);
-                                    (yyval.var_decls_node)->AddVarDecls((yyvsp[0].var_decls_node));
+  case 17:
+#line 185 "pascal.y" /* yacc.c:1646  */
+    { 
+                                    (yyval.decls_node) = (yyvsp[-2].decls_node);
+                                    (yyval.decls_node)->AddDecl((yyvsp[0].range_decl_node)); 
                                 }
+#line 1696 "pascalparse.c" /* yacc.c:1646  */
+    break;
+
+  case 18:
+#line 190 "pascal.y" /* yacc.c:1646  */
+    { (yyval.decls_node) = new cDeclsNode((yyvsp[0].range_decl_node)); }
+#line 1702 "pascalparse.c" /* yacc.c:1646  */
+    break;
+
+  case 19:
+#line 192 "pascal.y" /* yacc.c:1646  */
+    { (yyval.range_decl_node) = new cRangeDeclNode((yyvsp[-3].int_val), (yyvsp[0].int_val)); }
 #line 1708 "pascalparse.c" /* yacc.c:1646  */
     break;
 
-  case 23:
-#line 181 "pascal.y" /* yacc.c:1646  */
+  case 20:
+#line 195 "pascal.y" /* yacc.c:1646  */
     { (yyval.var_decls_node) = (yyvsp[0].var_decls_node); }
 #line 1714 "pascalparse.c" /* yacc.c:1646  */
     break;
 
-  case 24:
-#line 183 "pascal.y" /* yacc.c:1646  */
-    { (yyval.var_decls_node) = (yyvsp[-1].var_decls_node); }
+  case 21:
+#line 197 "pascal.y" /* yacc.c:1646  */
+    { (yyval.var_decls_node) = nullptr; }
 #line 1720 "pascalparse.c" /* yacc.c:1646  */
     break;
 
+  case 22:
+#line 199 "pascal.y" /* yacc.c:1646  */
+    {
+                                    (yyval.var_decls_node) = (yyvsp[-1].var_decls_node);
+                                    (yyval.var_decls_node)->AddVarDecls((yyvsp[0].var_decls_node));
+                                }
+#line 1729 "pascalparse.c" /* yacc.c:1646  */
+    break;
+
+  case 23:
+#line 204 "pascal.y" /* yacc.c:1646  */
+    { (yyval.var_decls_node) = (yyvsp[0].var_decls_node); }
+#line 1735 "pascalparse.c" /* yacc.c:1646  */
+    break;
+
+  case 24:
+#line 206 "pascal.y" /* yacc.c:1646  */
+    { (yyval.var_decls_node) = (yyvsp[-1].var_decls_node); }
+#line 1741 "pascalparse.c" /* yacc.c:1646  */
+    break;
+
   case 25:
-#line 185 "pascal.y" /* yacc.c:1646  */
+#line 208 "pascal.y" /* yacc.c:1646  */
     { (yyval.var_decls_node) = nullptr; }
-#line 1726 "pascalparse.c" /* yacc.c:1646  */
+#line 1747 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 187 "pascal.y" /* yacc.c:1646  */
-    { (yyval.var_decls_node) = new cVarDeclsNode((yyvsp[-2].id_list_node), (yyvsp[0].base_type_node)); }
-#line 1732 "pascalparse.c" /* yacc.c:1646  */
+#line 210 "pascal.y" /* yacc.c:1646  */
+    { (yyval.var_decls_node) = new cVarDeclsNode((yyvsp[-2].id_list_node), (yyvsp[0].symbol)->GetDecl()); }
+#line 1753 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 189 "pascal.y" /* yacc.c:1646  */
+#line 212 "pascal.y" /* yacc.c:1646  */
     { 
                                     if((yyvsp[-1].decls_node) == nullptr)
                                         (yyval.decls_node) = new cDeclsNode();
                                     else
                                         (yyval.decls_node) = (yyvsp[-1].decls_node);
 
-                                    (yyval.decls_node)->AddDecl((yyvsp[0].proc_decl_node));
+                                    (yyval.decls_node)->AddDecl((yyvsp[0].decl_node));
                                 }
-#line 1745 "pascalparse.c" /* yacc.c:1646  */
+#line 1766 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 198 "pascal.y" /* yacc.c:1646  */
+#line 221 "pascal.y" /* yacc.c:1646  */
     { (yyval.decls_node) = nullptr;  }
-#line 1751 "pascalparse.c" /* yacc.c:1646  */
+#line 1772 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 201 "pascal.y" /* yacc.c:1646  */
+#line 224 "pascal.y" /* yacc.c:1646  */
     { 
-                                    (yyval.proc_decl_node) = new cProcDeclNode((yyvsp[-4].symbol),(yyvsp[-3].var_decls_node),(yyvsp[-1].block_node)); 
+                                    (yyval.decl_node) = new cProcDeclNode((yyvsp[-4].symbol),(yyvsp[-3].var_decls_node),(yyvsp[-1].block_node)); 
                                 }
-#line 1759 "pascalparse.c" /* yacc.c:1646  */
+#line 1780 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 205 "pascal.y" /* yacc.c:1646  */
-    { }
-#line 1765 "pascalparse.c" /* yacc.c:1646  */
+#line 228 "pascal.y" /* yacc.c:1646  */
+    { (yyval.decl_node) = new cProcDeclNode((yyvsp[-4].symbol), (yyvsp[-3].var_decls_node), nullptr); }
+#line 1786 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 207 "pascal.y" /* yacc.c:1646  */
-    { }
-#line 1771 "pascalparse.c" /* yacc.c:1646  */
+#line 230 "pascal.y" /* yacc.c:1646  */
+    { 
+                                    (yyval.decl_node) = (yyvsp[-3].func_decl_node);
+                                    (yyval.decl_node)->AddBody((yyvsp[-1].block_node));
+                                }
+#line 1795 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 209 "pascal.y" /* yacc.c:1646  */
-    { }
-#line 1777 "pascalparse.c" /* yacc.c:1646  */
-    break;
-
-  case 33:
-#line 211 "pascal.y" /* yacc.c:1646  */
-    { }
-#line 1783 "pascalparse.c" /* yacc.c:1646  */
-    break;
-
-  case 34:
-#line 213 "pascal.y" /* yacc.c:1646  */
-    { }
-#line 1789 "pascalparse.c" /* yacc.c:1646  */
-    break;
-
-  case 35:
-#line 215 "pascal.y" /* yacc.c:1646  */
+#line 235 "pascal.y" /* yacc.c:1646  */
     { 
-                                    (yyval.symbol) = (yyvsp[0].symbol);
-                                    g_symbolTable.IncreaseScope();
+                                    (yyval.decl_node) = (yyvsp[-3].func_decl_node);
+                                    g_symbolTable.DecreaseScope();
                                 }
-#line 1798 "pascalparse.c" /* yacc.c:1646  */
-    break;
-
-  case 36:
-#line 220 "pascal.y" /* yacc.c:1646  */
-    { }
 #line 1804 "pascalparse.c" /* yacc.c:1646  */
     break;
 
-  case 37:
-#line 222 "pascal.y" /* yacc.c:1646  */
+  case 33:
+#line 240 "pascal.y" /* yacc.c:1646  */
     { }
 #line 1810 "pascalparse.c" /* yacc.c:1646  */
     break;
 
-  case 38:
-#line 224 "pascal.y" /* yacc.c:1646  */
-    { (yyval.var_decls_node) = (yyvsp[-1].var_decls_node); }
+  case 34:
+#line 242 "pascal.y" /* yacc.c:1646  */
+    { }
 #line 1816 "pascalparse.c" /* yacc.c:1646  */
     break;
 
+  case 35:
+#line 244 "pascal.y" /* yacc.c:1646  */
+    { 
+                                    (yyval.symbol) = (yyvsp[0].symbol);
+                                    g_symbolTable.IncreaseScope();
+                                }
+#line 1825 "pascalparse.c" /* yacc.c:1646  */
+    break;
+
+  case 36:
+#line 249 "pascal.y" /* yacc.c:1646  */
+    { 
+                                    (yyval.func_decl_node) = new cFuncDeclNode((yyvsp[0].symbol));
+                                    g_symbolTable.IncreaseScope();    
+                                }
+#line 1834 "pascalparse.c" /* yacc.c:1646  */
+    break;
+
+  case 37:
+#line 254 "pascal.y" /* yacc.c:1646  */
+    { (yyval.func_decl_node)->AddTypeParameters((yyvsp[0].symbol)->GetDecl(), (yyvsp[-2].var_decls_node)); }
+#line 1840 "pascalparse.c" /* yacc.c:1646  */
+    break;
+
+  case 38:
+#line 256 "pascal.y" /* yacc.c:1646  */
+    { (yyval.var_decls_node) = (yyvsp[-1].var_decls_node); }
+#line 1846 "pascalparse.c" /* yacc.c:1646  */
+    break;
+
   case 39:
-#line 226 "pascal.y" /* yacc.c:1646  */
+#line 258 "pascal.y" /* yacc.c:1646  */
     { (yyval.var_decls_node) = nullptr; }
-#line 1822 "pascalparse.c" /* yacc.c:1646  */
+#line 1852 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 229 "pascal.y" /* yacc.c:1646  */
+#line 261 "pascal.y" /* yacc.c:1646  */
     { 
                                     (yyval.id_list_node) = (yyvsp[-2].id_list_node); 
                                     (yyval.id_list_node)->AddSymbol((yyvsp[0].symbol));
                                 }
-#line 1831 "pascalparse.c" /* yacc.c:1646  */
-    break;
-
-  case 41:
-#line 234 "pascal.y" /* yacc.c:1646  */
-    { (yyval.id_list_node) = new cIdListNode((yyvsp[0].symbol)); }
-#line 1837 "pascalparse.c" /* yacc.c:1646  */
-    break;
-
-  case 42:
-#line 237 "pascal.y" /* yacc.c:1646  */
-    { 
-                                    (yyval.var_decls_node) = (yyvsp[-5].var_decls_node); //new cVarDeclsNode($4, $6);
-                                    (yyval.var_decls_node)->AddVarDecls((yyvsp[-2].id_list_node), (yyvsp[0].base_type_node));
-                                }
-#line 1846 "pascalparse.c" /* yacc.c:1646  */
-    break;
-
-  case 43:
-#line 242 "pascal.y" /* yacc.c:1646  */
-    {
-                                    (yyval.var_decls_node) = (yyvsp[-4].var_decls_node); //new cVarDeclsNode($3, $5);
-                                    (yyval.var_decls_node)->AddVarDecls((yyvsp[-2].id_list_node), (yyvsp[0].base_type_node));
-                                }
-#line 1855 "pascalparse.c" /* yacc.c:1646  */
-    break;
-
-  case 44:
-#line 247 "pascal.y" /* yacc.c:1646  */
-    { (yyval.var_decls_node) = new cVarDeclsNode((yyvsp[-2].id_list_node), (yyvsp[0].base_type_node)); }
 #line 1861 "pascalparse.c" /* yacc.c:1646  */
     break;
 
-  case 45:
-#line 249 "pascal.y" /* yacc.c:1646  */
-    { (yyval.var_decls_node) = new cVarDeclsNode((yyvsp[-2].id_list_node), (yyvsp[0].base_type_node)); }
+  case 41:
+#line 266 "pascal.y" /* yacc.c:1646  */
+    { (yyval.id_list_node) = new cIdListNode((yyvsp[0].symbol)); }
 #line 1867 "pascalparse.c" /* yacc.c:1646  */
     break;
 
-  case 46:
-#line 252 "pascal.y" /* yacc.c:1646  */
-    { (yyval.base_type_node) = (yyvsp[0].symbol)->GetDecl(); }
-#line 1873 "pascalparse.c" /* yacc.c:1646  */
+  case 42:
+#line 269 "pascal.y" /* yacc.c:1646  */
+    { 
+                                    (yyval.var_decls_node) = (yyvsp[-5].var_decls_node); //new cVarDeclsNode($4, $6);
+                                    (yyval.var_decls_node)->AddVarDecls((yyvsp[-2].id_list_node), (yyvsp[0].symbol)->GetDecl());
+                                }
+#line 1876 "pascalparse.c" /* yacc.c:1646  */
     break;
 
-  case 47:
-#line 254 "pascal.y" /* yacc.c:1646  */
-    { }
-#line 1879 "pascalparse.c" /* yacc.c:1646  */
-    break;
-
-  case 48:
-#line 256 "pascal.y" /* yacc.c:1646  */
-    { }
+  case 43:
+#line 274 "pascal.y" /* yacc.c:1646  */
+    {
+                                    (yyval.var_decls_node) = (yyvsp[-4].var_decls_node); //new cVarDeclsNode($3, $5);
+                                    (yyval.var_decls_node)->AddVarDecls((yyvsp[-2].id_list_node), (yyvsp[0].symbol)->GetDecl());
+                                }
 #line 1885 "pascalparse.c" /* yacc.c:1646  */
     break;
 
-  case 49:
-#line 258 "pascal.y" /* yacc.c:1646  */
-    { }
+  case 44:
+#line 279 "pascal.y" /* yacc.c:1646  */
+    { (yyval.var_decls_node) = new cVarDeclsNode((yyvsp[-2].id_list_node), (yyvsp[0].symbol)->GetDecl()); }
 #line 1891 "pascalparse.c" /* yacc.c:1646  */
     break;
 
-  case 50:
-#line 260 "pascal.y" /* yacc.c:1646  */
-    { }
+  case 45:
+#line 281 "pascal.y" /* yacc.c:1646  */
+    { (yyval.var_decls_node) = new cVarDeclsNode((yyvsp[-2].id_list_node), (yyvsp[0].symbol)->GetDecl()); }
 #line 1897 "pascalparse.c" /* yacc.c:1646  */
     break;
 
+  case 46:
+#line 284 "pascal.y" /* yacc.c:1646  */
+    { (yyval.symbol) = (yyvsp[0].symbol); }
+#line 1903 "pascalparse.c" /* yacc.c:1646  */
+    break;
+
+  case 47:
+#line 286 "pascal.y" /* yacc.c:1646  */
+    { g_symbolTable.IncreaseScope(); }
+#line 1909 "pascalparse.c" /* yacc.c:1646  */
+    break;
+
+  case 48:
+#line 288 "pascal.y" /* yacc.c:1646  */
+    { 
+                                    (yyval.var_decls_node) = (yyvsp[-1].var_decls_node);
+                                    g_symbolTable.DecreaseScope();    
+                                }
+#line 1918 "pascalparse.c" /* yacc.c:1646  */
+    break;
+
+  case 49:
+#line 293 "pascal.y" /* yacc.c:1646  */
+    { (yyval.expr_node) = new cIntExprNode((yyvsp[0].int_val)); }
+#line 1924 "pascalparse.c" /* yacc.c:1646  */
+    break;
+
+  case 50:
+#line 295 "pascal.y" /* yacc.c:1646  */
+    { (yyval.expr_node) = new cUnaryExprNode('-', new cIntExprNode((yyvsp[0].int_val))); }
+#line 1930 "pascalparse.c" /* yacc.c:1646  */
+    break;
+
   case 51:
-#line 263 "pascal.y" /* yacc.c:1646  */
+#line 298 "pascal.y" /* yacc.c:1646  */
     { 
                                   (yyval.stmts_node) = (yyvsp[-1].stmts_node);
                                   (yyval.stmts_node)->AddStmt((yyvsp[0].stmt_node)); 
                                 }
-#line 1906 "pascalparse.c" /* yacc.c:1646  */
+#line 1939 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 268 "pascal.y" /* yacc.c:1646  */
+#line 303 "pascal.y" /* yacc.c:1646  */
     { (yyval.stmts_node) = new cStmtsNode((yyvsp[0].stmt_node)); }
-#line 1912 "pascalparse.c" /* yacc.c:1646  */
+#line 1945 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 271 "pascal.y" /* yacc.c:1646  */
+#line 306 "pascal.y" /* yacc.c:1646  */
     { (yyval.stmt_node) = new cAssignNode((yyvsp[-3].var_expr_node), (yyvsp[-1].expr_node)); }
-#line 1918 "pascalparse.c" /* yacc.c:1646  */
+#line 1951 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 273 "pascal.y" /* yacc.c:1646  */
+#line 308 "pascal.y" /* yacc.c:1646  */
     { (yyval.stmt_node) = new cIfNode((yyvsp[-2].expr_node), (yyvsp[0].stmt_node), nullptr); }
-#line 1924 "pascalparse.c" /* yacc.c:1646  */
+#line 1957 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 275 "pascal.y" /* yacc.c:1646  */
+#line 310 "pascal.y" /* yacc.c:1646  */
     { (yyval.stmt_node) = new cIfNode((yyvsp[-4].expr_node), (yyvsp[-2].stmt_node), (yyvsp[0].stmt_node)); }
-#line 1930 "pascalparse.c" /* yacc.c:1646  */
+#line 1963 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 277 "pascal.y" /* yacc.c:1646  */
+#line 312 "pascal.y" /* yacc.c:1646  */
     { }
-#line 1936 "pascalparse.c" /* yacc.c:1646  */
+#line 1969 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 279 "pascal.y" /* yacc.c:1646  */
+#line 314 "pascal.y" /* yacc.c:1646  */
     { (yyval.stmt_node) = new cWhileNode((yyvsp[-2].expr_node), (yyvsp[0].stmt_node)); }
-#line 1942 "pascalparse.c" /* yacc.c:1646  */
+#line 1975 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 281 "pascal.y" /* yacc.c:1646  */
+#line 316 "pascal.y" /* yacc.c:1646  */
     {}
-#line 1948 "pascalparse.c" /* yacc.c:1646  */
+#line 1981 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 283 "pascal.y" /* yacc.c:1646  */
+#line 318 "pascal.y" /* yacc.c:1646  */
     {}
-#line 1954 "pascalparse.c" /* yacc.c:1646  */
+#line 1987 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 285 "pascal.y" /* yacc.c:1646  */
+#line 320 "pascal.y" /* yacc.c:1646  */
     { (yyval.stmt_node) = new cProcCallNode((yyvsp[-4].symbol), (yyvsp[-2].expr_list_node)); }
-#line 1960 "pascalparse.c" /* yacc.c:1646  */
+#line 1993 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 287 "pascal.y" /* yacc.c:1646  */
+#line 322 "pascal.y" /* yacc.c:1646  */
     { (yyval.stmt_node) = new cProcCallNode((yyvsp[-1].symbol), nullptr); }
-#line 1966 "pascalparse.c" /* yacc.c:1646  */
-    break;
-
-  case 62:
-#line 289 "pascal.y" /* yacc.c:1646  */
-    { (yyval.stmt_node) = new cWriteNode((yyvsp[-2].expr_list_node)); }
-#line 1972 "pascalparse.c" /* yacc.c:1646  */
-    break;
-
-  case 63:
-#line 291 "pascal.y" /* yacc.c:1646  */
-    { (yyval.stmt_node) = new cCompoundStmtNode((yyvsp[-1].stmts_node)); }
-#line 1978 "pascalparse.c" /* yacc.c:1646  */
-    break;
-
-  case 64:
-#line 293 "pascal.y" /* yacc.c:1646  */
-    { (yyval.stmt_node) = new cNilNode(); }
-#line 1984 "pascalparse.c" /* yacc.c:1646  */
-    break;
-
-  case 65:
-#line 295 "pascal.y" /* yacc.c:1646  */
-    { }
-#line 1990 "pascalparse.c" /* yacc.c:1646  */
-    break;
-
-  case 66:
-#line 298 "pascal.y" /* yacc.c:1646  */
-    { 
-                                  (yyval.expr_list_node) = (yyvsp[-2].expr_list_node);
-                                  (yyval.expr_list_node)->AddExpr((yyvsp[0].expr_node)); 
-                                }
 #line 1999 "pascalparse.c" /* yacc.c:1646  */
     break;
 
-  case 67:
-#line 303 "pascal.y" /* yacc.c:1646  */
-    { (yyval.expr_list_node) = new cExprListNode((yyvsp[0].expr_node)); }
+  case 62:
+#line 324 "pascal.y" /* yacc.c:1646  */
+    { (yyval.stmt_node) = new cWriteNode((yyvsp[-2].expr_list_node)); }
 #line 2005 "pascalparse.c" /* yacc.c:1646  */
     break;
 
-  case 68:
-#line 305 "pascal.y" /* yacc.c:1646  */
-    { }
+  case 63:
+#line 326 "pascal.y" /* yacc.c:1646  */
+    { (yyval.stmt_node) = new cCompoundStmtNode((yyvsp[-1].stmts_node)); }
 #line 2011 "pascalparse.c" /* yacc.c:1646  */
     break;
 
-  case 69:
-#line 307 "pascal.y" /* yacc.c:1646  */
-    { (yyval.expr_node) = (yyvsp[0].expr_node); }
+  case 64:
+#line 328 "pascal.y" /* yacc.c:1646  */
+    { (yyval.stmt_node) = new cNilNode(); }
 #line 2017 "pascalparse.c" /* yacc.c:1646  */
     break;
 
-  case 70:
-#line 310 "pascal.y" /* yacc.c:1646  */
+  case 65:
+#line 330 "pascal.y" /* yacc.c:1646  */
     { }
 #line 2023 "pascalparse.c" /* yacc.c:1646  */
     break;
 
+  case 66:
+#line 333 "pascal.y" /* yacc.c:1646  */
+    { 
+                                  (yyval.expr_list_node) = (yyvsp[-2].expr_list_node);
+                                  (yyval.expr_list_node)->AddExpr((yyvsp[0].expr_node)); 
+                                }
+#line 2032 "pascalparse.c" /* yacc.c:1646  */
+    break;
+
+  case 67:
+#line 338 "pascal.y" /* yacc.c:1646  */
+    { (yyval.expr_list_node) = new cExprListNode((yyvsp[0].expr_node)); }
+#line 2038 "pascalparse.c" /* yacc.c:1646  */
+    break;
+
+  case 68:
+#line 340 "pascal.y" /* yacc.c:1646  */
+    { }
+#line 2044 "pascalparse.c" /* yacc.c:1646  */
+    break;
+
+  case 69:
+#line 342 "pascal.y" /* yacc.c:1646  */
+    { (yyval.expr_node) = (yyvsp[0].expr_node); }
+#line 2050 "pascalparse.c" /* yacc.c:1646  */
+    break;
+
+  case 70:
+#line 345 "pascal.y" /* yacc.c:1646  */
+    { (yyval.expr_node) = new cFuncExprNode((yyvsp[-3].symbol), (yyvsp[-1].expr_list_node)); }
+#line 2056 "pascalparse.c" /* yacc.c:1646  */
+    break;
+
   case 71:
-#line 313 "pascal.y" /* yacc.c:1646  */
-    { }
-#line 2029 "pascalparse.c" /* yacc.c:1646  */
-    break;
-
-  case 72:
-#line 315 "pascal.y" /* yacc.c:1646  */
-    { }
-#line 2035 "pascalparse.c" /* yacc.c:1646  */
-    break;
-
-  case 73:
-#line 317 "pascal.y" /* yacc.c:1646  */
-    { (yyval.var_expr_node) = (yyvsp[0].var_expr_node); }
-#line 2041 "pascalparse.c" /* yacc.c:1646  */
-    break;
-
-  case 74:
-#line 320 "pascal.y" /* yacc.c:1646  */
-    { (yyval.var_expr_node) = new cVarExprNode((yyvsp[0].symbol)); }
-#line 2047 "pascalparse.c" /* yacc.c:1646  */
-    break;
-
-  case 75:
-#line 323 "pascal.y" /* yacc.c:1646  */
-    { (yyval.expr_node) = new cBinaryExprNode((yyvsp[-2].expr_node), new cOpNode('='), (yyvsp[0].expr_node)); }
-#line 2053 "pascalparse.c" /* yacc.c:1646  */
-    break;
-
-  case 76:
-#line 325 "pascal.y" /* yacc.c:1646  */
-    { (yyval.expr_node) = new cBinaryExprNode((yyvsp[-2].expr_node), new cOpNode('>'), (yyvsp[0].expr_node)); }
-#line 2059 "pascalparse.c" /* yacc.c:1646  */
-    break;
-
-  case 77:
-#line 327 "pascal.y" /* yacc.c:1646  */
-    { (yyval.expr_node) = new cBinaryExprNode((yyvsp[-2].expr_node), new cOpNode('<'), (yyvsp[0].expr_node)); }
+#line 348 "pascal.y" /* yacc.c:1646  */
+    { 
+                                    (yyval.var_expr_node) = (yyvsp[-2].var_expr_node);
+                                    (yyval.var_expr_node)->AddVariable((yyvsp[0].var_expr_node));
+                                }
 #line 2065 "pascalparse.c" /* yacc.c:1646  */
     break;
 
+  case 72:
+#line 353 "pascal.y" /* yacc.c:1646  */
+    { 
+                                    (yyval.var_expr_node) = (yyvsp[-3].var_expr_node);
+                                    (yyval.var_expr_node)->AddExpr((yyvsp[-1].expr_list_node));
+                                 }
+#line 2074 "pascalparse.c" /* yacc.c:1646  */
+    break;
+
+  case 73:
+#line 358 "pascal.y" /* yacc.c:1646  */
+    { (yyval.var_expr_node) = (yyvsp[0].var_expr_node); }
+#line 2080 "pascalparse.c" /* yacc.c:1646  */
+    break;
+
+  case 74:
+#line 361 "pascal.y" /* yacc.c:1646  */
+    { (yyval.var_expr_node) = new cVarExprNode((yyvsp[0].symbol)); }
+#line 2086 "pascalparse.c" /* yacc.c:1646  */
+    break;
+
+  case 75:
+#line 364 "pascal.y" /* yacc.c:1646  */
+    { (yyval.expr_node) = new cBinaryExprNode((yyvsp[-2].expr_node), new cOpNode('='), (yyvsp[0].expr_node)); }
+#line 2092 "pascalparse.c" /* yacc.c:1646  */
+    break;
+
+  case 76:
+#line 366 "pascal.y" /* yacc.c:1646  */
+    { (yyval.expr_node) = new cBinaryExprNode((yyvsp[-2].expr_node), new cOpNode('>'), (yyvsp[0].expr_node)); }
+#line 2098 "pascalparse.c" /* yacc.c:1646  */
+    break;
+
+  case 77:
+#line 368 "pascal.y" /* yacc.c:1646  */
+    { (yyval.expr_node) = new cBinaryExprNode((yyvsp[-2].expr_node), new cOpNode('<'), (yyvsp[0].expr_node)); }
+#line 2104 "pascalparse.c" /* yacc.c:1646  */
+    break;
+
   case 78:
-#line 329 "pascal.y" /* yacc.c:1646  */
+#line 370 "pascal.y" /* yacc.c:1646  */
     { (yyval.expr_node) = new cBinaryExprNode((yyvsp[-2].expr_node), new cOpNode(LE), (yyvsp[0].expr_node)); }
-#line 2071 "pascalparse.c" /* yacc.c:1646  */
+#line 2110 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 79:
-#line 331 "pascal.y" /* yacc.c:1646  */
+#line 372 "pascal.y" /* yacc.c:1646  */
     { (yyval.expr_node) = new cBinaryExprNode((yyvsp[-2].expr_node), new cOpNode(GE), (yyvsp[0].expr_node)); }
-#line 2077 "pascalparse.c" /* yacc.c:1646  */
+#line 2116 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 80:
-#line 333 "pascal.y" /* yacc.c:1646  */
+#line 374 "pascal.y" /* yacc.c:1646  */
     { (yyval.expr_node) = new cBinaryExprNode((yyvsp[-2].expr_node), new cOpNode(NOT_EQUAL), (yyvsp[0].expr_node)); }
-#line 2083 "pascalparse.c" /* yacc.c:1646  */
+#line 2122 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 81:
-#line 335 "pascal.y" /* yacc.c:1646  */
+#line 376 "pascal.y" /* yacc.c:1646  */
     { (yyval.expr_node) = (yyvsp[0].expr_node); }
-#line 2089 "pascalparse.c" /* yacc.c:1646  */
+#line 2128 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 82:
-#line 338 "pascal.y" /* yacc.c:1646  */
+#line 379 "pascal.y" /* yacc.c:1646  */
     { (yyval.expr_node) = new cBinaryExprNode((yyvsp[-2].expr_node), new cOpNode('+'), (yyvsp[0].expr_node)); }
-#line 2095 "pascalparse.c" /* yacc.c:1646  */
+#line 2134 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 340 "pascal.y" /* yacc.c:1646  */
+#line 381 "pascal.y" /* yacc.c:1646  */
     { (yyval.expr_node) = new cBinaryExprNode((yyvsp[-2].expr_node), new cOpNode('-'), (yyvsp[0].expr_node)); }
-#line 2101 "pascalparse.c" /* yacc.c:1646  */
+#line 2140 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 84:
-#line 342 "pascal.y" /* yacc.c:1646  */
+#line 383 "pascal.y" /* yacc.c:1646  */
     { (yyval.expr_node) = new cBinaryExprNode((yyvsp[-2].expr_node), new cOpNode(OR), (yyvsp[0].expr_node)); }
-#line 2107 "pascalparse.c" /* yacc.c:1646  */
+#line 2146 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 85:
-#line 344 "pascal.y" /* yacc.c:1646  */
+#line 385 "pascal.y" /* yacc.c:1646  */
     { (yyval.expr_node) = (yyvsp[0].expr_node); }
-#line 2113 "pascalparse.c" /* yacc.c:1646  */
+#line 2152 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 86:
-#line 346 "pascal.y" /* yacc.c:1646  */
+#line 387 "pascal.y" /* yacc.c:1646  */
     { (yyval.expr_node) = new cUnaryExprNode('-', (yyvsp[0].expr_node)); }
-#line 2119 "pascalparse.c" /* yacc.c:1646  */
+#line 2158 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 87:
-#line 349 "pascal.y" /* yacc.c:1646  */
+#line 390 "pascal.y" /* yacc.c:1646  */
     { (yyval.expr_node) = new cBinaryExprNode((yyvsp[-2].expr_node), new cOpNode('*'), (yyvsp[0].expr_node)); }
-#line 2125 "pascalparse.c" /* yacc.c:1646  */
+#line 2164 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 88:
-#line 351 "pascal.y" /* yacc.c:1646  */
+#line 392 "pascal.y" /* yacc.c:1646  */
     { (yyval.expr_node) = new cBinaryExprNode((yyvsp[-2].expr_node), new cOpNode('/'), (yyvsp[0].expr_node)); }
-#line 2131 "pascalparse.c" /* yacc.c:1646  */
+#line 2170 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 89:
-#line 353 "pascal.y" /* yacc.c:1646  */
+#line 394 "pascal.y" /* yacc.c:1646  */
     { (yyval.expr_node) = new cBinaryExprNode((yyvsp[-2].expr_node), new cOpNode(MOD), (yyvsp[0].expr_node)); }
-#line 2137 "pascalparse.c" /* yacc.c:1646  */
+#line 2176 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 90:
-#line 355 "pascal.y" /* yacc.c:1646  */
+#line 396 "pascal.y" /* yacc.c:1646  */
     { (yyval.expr_node) = new cBinaryExprNode((yyvsp[-2].expr_node), new cOpNode(DIV), (yyvsp[0].expr_node)); }
-#line 2143 "pascalparse.c" /* yacc.c:1646  */
+#line 2182 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 91:
-#line 357 "pascal.y" /* yacc.c:1646  */
+#line 398 "pascal.y" /* yacc.c:1646  */
     { (yyval.expr_node) = new cBinaryExprNode((yyvsp[-2].expr_node), new cOpNode(AND), (yyvsp[0].expr_node)); }
-#line 2149 "pascalparse.c" /* yacc.c:1646  */
+#line 2188 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 92:
-#line 359 "pascal.y" /* yacc.c:1646  */
+#line 400 "pascal.y" /* yacc.c:1646  */
     { (yyval.expr_node) = (yyvsp[0].expr_node); }
-#line 2155 "pascalparse.c" /* yacc.c:1646  */
+#line 2194 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 93:
-#line 362 "pascal.y" /* yacc.c:1646  */
+#line 403 "pascal.y" /* yacc.c:1646  */
     { (yyval.expr_node) = (yyvsp[-1].expr_node); }
-#line 2161 "pascalparse.c" /* yacc.c:1646  */
+#line 2200 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 94:
-#line 364 "pascal.y" /* yacc.c:1646  */
+#line 405 "pascal.y" /* yacc.c:1646  */
     { (yyval.expr_node) = new cIntExprNode((yyvsp[0].int_val)); }
-#line 2167 "pascalparse.c" /* yacc.c:1646  */
+#line 2206 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 95:
-#line 366 "pascal.y" /* yacc.c:1646  */
+#line 407 "pascal.y" /* yacc.c:1646  */
     { (yyval.expr_node) = new cRealExprNode((yyvsp[0].real_val)); }
-#line 2173 "pascalparse.c" /* yacc.c:1646  */
+#line 2212 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 96:
-#line 368 "pascal.y" /* yacc.c:1646  */
+#line 409 "pascal.y" /* yacc.c:1646  */
     { (yyval.expr_node) = (yyvsp[0].var_expr_node); }
-#line 2179 "pascalparse.c" /* yacc.c:1646  */
+#line 2218 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 97:
-#line 370 "pascal.y" /* yacc.c:1646  */
-    { }
-#line 2185 "pascalparse.c" /* yacc.c:1646  */
+#line 411 "pascal.y" /* yacc.c:1646  */
+    { (yyval.expr_node) = (yyvsp[0].expr_node); }
+#line 2224 "pascalparse.c" /* yacc.c:1646  */
     break;
 
   case 98:
-#line 372 "pascal.y" /* yacc.c:1646  */
+#line 413 "pascal.y" /* yacc.c:1646  */
     { (yyval.expr_node) = new cUnaryExprNode(NOT, (yyvsp[0].expr_node)); }
-#line 2191 "pascalparse.c" /* yacc.c:1646  */
+#line 2230 "pascalparse.c" /* yacc.c:1646  */
     break;
 
 
-#line 2195 "pascalparse.c" /* yacc.c:1646  */
+#line 2234 "pascalparse.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2426,7 +2465,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 374 "pascal.y" /* yacc.c:1906  */
+#line 415 "pascal.y" /* yacc.c:1906  */
 
 
 // Function to format error messages

@@ -1,11 +1,15 @@
+#pragma once
 #include "cExprNode.h"
+#include "cSymbol.h"
+#include "cExprListNode.h"
 
 class cFuncExprNode : public cExprNode
 {
-public
-    cFuncExprNode( cSymbol* name, cExprListNode*) : cExprNode()
+public:
+    cFuncExprNode( cSymbol* name, cExprListNode* params) : cExprNode()
     {
-        AddChild()
+        AddChild(name);
+        AddChild(params);
     }
     
     virtual string NodeType() { return string("funcCall"); }

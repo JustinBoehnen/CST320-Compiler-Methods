@@ -33,6 +33,8 @@
     cBaseTypeNode*  base_type_node;
     cVarExprNode*   var_expr_node;
     cProcDeclNode*  proc_decl_node;
+    cRangeDeclNode* range_decl_node;
+    cFuncDeclNode*  func_decl_node;
     }
 
 %{
@@ -73,29 +75,29 @@
 %type <program_node> program
 %type <symbol> header
 %type <block_node> block
-%type <base_type_node> type
+%type <symbol> type
 %type <decls_node> decls
-%type <ast_node> constdecls
-%type <ast_node> constdecl
-%type <ast_node> constant
-%type <ast_node> typedecls
-%type <ast_node> typedecl
-%type <ast_node> singleType
-%type <ast_node> rangeList
-%type <ast_node> range
+%type <decls_node> constdecls
+%type <decls_node> constdecl
+%type <expr_node> constant
+%type <decls_node> typedecls
+%type <decls_node> typedecl
+%type <decl_node> singleType
+%type <decls_node> rangeList
+%type <range_decl_node> range
 %type <var_decls_node> goodvar
 %type <var_decls_node> onevar
-%type <ast_node> recorddef
+%type <var_decls_node> recorddef
 %type <var_decls_node> vardecls
 %type <var_decls_node> vardecl;
 %type <decls_node> procdecls
 %type <var_decls_node> paramSpec
-%type <proc_decl_node> procdecl
+%type <decl_node> procdecl
 %type <var_decls_node> parlist
 %type <id_list_node> idlist
-%type <ast_node> func_call
-%type <ast_node> funcProto
-%type <ast_node> funcHeader
+%type <expr_node> func_call
+%type <func_decl_node> funcProto
+%type <func_decl_node> funcHeader
 %type <symbol> procHeader
 %type <stmts_node> statements
 %type <stmt_node> statement
@@ -135,38 +137,59 @@ decls: constdecls typedecls vardecls procdecls
                                     || $3 != nullptr || $4 != nullptr)
                                     {
                                         $$ = new cDeclsNode();
+                                        $$->AddDecls($1);
+                                        $$->AddDecls($2);
                                         $$->AddDecls($3);
                                         $$->AddDecls($4);
                                     }
                                 }
 constdecls: CONST constdecl ';'
-                                { }
+                                { $$ = $2; }
         | /*empty */
                                 { $$ = nullptr; }
 constdecl: constdecl ';' IDENTIFIER '=' constant 
-                                { }
+                                { 
+                                    $$ = $1;
+                                    $$->AddDecl(new cConstDeclNode($3, $5));
+                                }
         |  IDENTIFIER '=' constant 
-                                { }
+                                { $$ = new cDeclsNode(new cConstDeclNode($1, $3)); }
 typedecls: TYPE typedecl
-                                { }
+                                { $$ = $2; }
         | /*empty */
                                 { $$ = nullptr; }
 typedecl: typedecl singleType
-                                { }
+                                { 
+                                    $$ = $1;
+                                    $$->AddDecl($2); 
+                                }
         |  singleType
-                                { }
+                                { $$ = new cDeclsNode($1); }
         |  error ';'
                                 {}
 singleType:  IDENTIFIER '=' recHeader recorddef ';'
-                                { }
+                                { 
+                                    $1->SetIsType(true);
+                                    $$ = new cRecordDeclNode($1, $4); 
+                                    $1->SetDecl($$);
+                                }
+
         | IDENTIFIER '=' ARRAY '[' rangeList ']' OF type ';'
-                                { }
+                                { 
+                                    $1->SetIsType(true);
+                                    $$ = new cArrayDeclNode($1, $8->GetDecl(), $5);
+                                    $1->SetDecl($$);
+                                }
+
 rangeList: rangeList ',' range
-                                { }
+                                { 
+                                    $$ = $1;
+                                    $$->AddDecl($3); 
+                                }
         |  range
-                                { }
+                                { $$ = new cDeclsNode($1); }
 range: INT_VAL '.' '.' INT_VAL
-                                { }
+                                { $$ = new cRangeDeclNode($1, $4); }
 
 vardecls: VAR vardecl
                                 { $$ = $2; }
@@ -184,7 +207,7 @@ onevar: goodvar ';'
         | error ';'
                                 { $$ = nullptr; }
 goodvar: idlist ':' type
-                                { $$ = new cVarDeclsNode($1, $3); }
+                                { $$ = new cVarDeclsNode($1, $3->GetDecl()); }
 procdecls: procdecls procdecl
                                 { 
                                     if($1 == nullptr)
@@ -202,11 +225,17 @@ procdecl: procHeader paramSpec ';' block ';'
                                     $$ = new cProcDeclNode($1,$2,$4); 
                                 }
         |  procHeader paramSpec ';' FORWARD ';'
-                                { }
+                                { $$ = new cProcDeclNode($1, $2, nullptr); }
         |  funcProto ';' block ';'
-                                { }
+                                { 
+                                    $$ = $1;
+                                    $$->AddBody($3);
+                                }
         |  funcProto ';' FORWARD ';'
-                                { }
+                                { 
+                                    $$ = $1;
+                                    g_symbolTable.DecreaseScope();
+                                }
         |  error ';' block ';'
                                 { }
         |  error ';' FORWARD ';'
@@ -217,9 +246,12 @@ procHeader: PROCEDURE IDENTIFIER
                                     g_symbolTable.IncreaseScope();
                                 }
 funcHeader: FUNCTION IDENTIFIER
-                                { }
+                                { 
+                                    $$ = new cFuncDeclNode($2);
+                                    g_symbolTable.IncreaseScope();    
+                                }
 funcProto: funcHeader paramSpec ':' type
-                                { }
+                                { $$->AddTypeParameters($4->GetDecl(), $2); }
 paramSpec: '(' parlist ')'
                                 { $$ = $2; }
         | /* empty */
@@ -236,28 +268,31 @@ idlist: idlist ',' IDENTIFIER
 parlist: parlist ';' VAR idlist ':' type 
                                 { 
                                     $$ = $1; //new cVarDeclsNode($4, $6);
-                                    $$->AddVarDecls($4, $6);
+                                    $$->AddVarDecls($4, $6->GetDecl());
                                 }
     |    parlist ';' idlist ':' type 
                                 {
                                     $$ = $1; //new cVarDeclsNode($3, $5);
-                                    $$->AddVarDecls($3, $5);
+                                    $$->AddVarDecls($3, $5->GetDecl());
                                 }
     |    VAR idlist ':' type
-                                { $$ = new cVarDeclsNode($2, $4); }
+                                { $$ = new cVarDeclsNode($2, $4->GetDecl()); }
     |    idlist ':' type
-                                { $$ = new cVarDeclsNode($1, $3); }
+                                { $$ = new cVarDeclsNode($1, $3->GetDecl()); }
 
 type: TYPE_ID
-                                { $$ = $1->GetDecl(); }
+                                { $$ = $1; }
 recHeader: RECORD
-                                { }
+                                { g_symbolTable.IncreaseScope(); }
 recorddef: vardecl CLOSE
-                                { }
+                                { 
+                                    $$ = $1;
+                                    g_symbolTable.DecreaseScope();    
+                                }
 constant: INT_VAL
-                                { }
+                                { $$ = new cIntExprNode($1); }
     |   '-' INT_VAL
-                                { }
+                                { $$ = new cUnaryExprNode('-', new cIntExprNode($2)); }
 
 statements: statements statement
                                 { 
@@ -307,12 +342,18 @@ oneExpr: expr
                                 { $$ = $1; }
 
 func_call:  IDENTIFIER '(' exprList ')'
-                                { }
+                                { $$ = new cFuncExprNode($1, $3); }
 
 variable: variable '.' varpart
-                                { }
+                                { 
+                                    $$ = $1;
+                                    $$->AddVariable($3);
+                                }
         | variable '[' exprList ']'
-                                { }
+                                { 
+                                    $$ = $1;
+                                    $$->AddExpr($3);
+                                 }
         | varpart
                                 { $$ = $1; }
 
@@ -367,7 +408,7 @@ fact:        '(' expr ')'
         |   variable
                                 { $$ = $1; }
         |   func_call
-                                { }
+                                { $$ = $1; }
         |   NOT fact
                                 { $$ = new cUnaryExprNode(NOT, $2); }
 

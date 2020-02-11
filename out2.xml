@@ -7,21 +7,65 @@
         <type name="integer" size="4" isFloat="0"/>
         <sym id="5" name="aaa"/>
       </var_decl>
-      <sym id="-1" name="function"/>
-      <sym id="-1" name="function"/>
+      <func>
+        <sym id="6" name="func1"/>
+        <type name="integer" size="4" isFloat="0"/>
+        <var_decls>
+          <var_decl>
+            <type name="integer" size="4" isFloat="0"/>
+            <sym id="7" name="a"/>
+          </var_decl>
+        </var_decls>
+      </func>
+      <func>
+        <sym id="8" name="func1"/>
+        <type name="integer" size="4" isFloat="0"/>
+        <var_decls>
+          <var_decl>
+            <type name="integer" size="4" isFloat="0"/>
+            <sym id="9" name="a"/>
+          </var_decl>
+        </var_decls>
+        <block>
+          <stmts>
+            <WRITE>
+              <exprList>
+                <varref>
+                  <sym id="9" name="a"/>
+                </varref>
+              </exprList>
+            </WRITE>
+            <assign>
+              <varref>
+                <sym id="8" name="func1"/>
+              </varref>
+              <varref>
+                <sym id="9" name="a"/>
+              </varref>
+            </assign>
+          </stmts>
+        </block>
+      </func>
     </decls>
     <stmts>
       <assign>
         <varref>
-          <sym id="11" name="aaa"/>
+          <sym id="5" name="aaa"/>
         </varref>
         <INTEGER value="5"/>
       </assign>
       <assign>
         <varref>
-          <sym id="12" name="aaa"/>
+          <sym id="5" name="aaa"/>
         </varref>
-        <sym id="13" name="func1"/>
+        <funcCall>
+          <sym id="8" name="func1"/>
+          <exprList>
+            <varref>
+              <sym id="5" name="aaa"/>
+            </varref>
+          </exprList>
+        </funcCall>
       </assign>
     </stmts>
   </block>

@@ -15,4 +15,9 @@ class cDeclNode : public cAstNode
 {
     public:
         cDeclNode() : cAstNode() {}
+
+        void AddBody(cAstNode* body)
+        {
+            AddChild(body);
+        }
 };
