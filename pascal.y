@@ -32,6 +32,7 @@
     cVarDeclsNode*  var_decls_node;
     cBaseTypeNode*  base_type_node;
     cVarExprNode*   var_expr_node;
+    cProcDeclNode*  proc_decl_node;
     }
 
 %{
@@ -87,15 +88,15 @@
 %type <ast_node> recorddef
 %type <var_decls_node> vardecls
 %type <var_decls_node> vardecl;
-%type <ast_node> procdecls
-%type <ast_node> paramSpec
-%type <ast_node> procdecl
-%type <ast_node> parlist
+%type <decls_node> procdecls
+%type <var_decls_node> paramSpec
+%type <proc_decl_node> procdecl
+%type <var_decls_node> parlist
 %type <id_list_node> idlist
 %type <ast_node> func_call
 %type <ast_node> funcProto
 %type <ast_node> funcHeader
-%type <ast_node> procHeader
+%type <symbol> procHeader
 %type <stmts_node> statements
 %type <stmt_node> statement
 %type <expr_node> expr
@@ -118,11 +119,15 @@ program: header block '.'
                                       YYABORT;
                                 }
 header: PROGRAM IDENTIFIER ';'
-                                {  g_symbolTable.IncreaseScope();
-                                   $$ = $2; 
+                                {  
+                                    g_symbolTable.IncreaseScope();
+                                    $$ = $2; 
                                 }
 block:  decls OPEN statements CLOSE
-                                { $$ = new cBlockNode($1, $3); }
+                                { 
+                                    $$ = new cBlockNode($1, $3); 
+                                    g_symbolTable.DecreaseScope();
+                                }
 
 decls: constdecls typedecls vardecls procdecls
                                 { 
@@ -131,6 +136,7 @@ decls: constdecls typedecls vardecls procdecls
                                     {
                                         $$ = new cDeclsNode();
                                         $$->AddDecls($3);
+                                        $$->AddDecls($4);
                                     }
                                 }
 constdecls: CONST constdecl ';'
@@ -180,12 +186,21 @@ onevar: goodvar ';'
 goodvar: idlist ':' type
                                 { $$ = new cVarDeclsNode($1, $3); }
 procdecls: procdecls procdecl
-                                { }
+                                { 
+                                    if($1 == nullptr)
+                                        $$ = new cDeclsNode();
+                                    else
+                                        $$ = $1;
+
+                                    $$->AddDecl($2);
+                                }
         | /* empty */
                                 { $$ = nullptr;  }
 
 procdecl: procHeader paramSpec ';' block ';'
-                                { }
+                                { 
+                                    $$ = new cProcDeclNode($1,$2,$4); 
+                                }
         |  procHeader paramSpec ';' FORWARD ';'
                                 { }
         |  funcProto ';' block ';'
@@ -197,15 +212,18 @@ procdecl: procHeader paramSpec ';' block ';'
         |  error ';' FORWARD ';'
                                 { }
 procHeader: PROCEDURE IDENTIFIER 
-                                { }
+                                { 
+                                    $$ = $2;
+                                    g_symbolTable.IncreaseScope();
+                                }
 funcHeader: FUNCTION IDENTIFIER
                                 { }
 funcProto: funcHeader paramSpec ':' type
                                 { }
 paramSpec: '(' parlist ')'
-                                { }
+                                { $$ = $2; }
         | /* empty */
-                                { }
+                                { $$ = nullptr; }
 
 idlist: idlist ',' IDENTIFIER
                                 { 
@@ -216,13 +234,19 @@ idlist: idlist ',' IDENTIFIER
                                 { $$ = new cIdListNode($1); }
 
 parlist: parlist ';' VAR idlist ':' type 
-                                { }
+                                { 
+                                    $$ = $1; //new cVarDeclsNode($4, $6);
+                                    $$->AddVarDecls($4, $6);
+                                }
     |    parlist ';' idlist ':' type 
-                                { }
+                                {
+                                    $$ = $1; //new cVarDeclsNode($3, $5);
+                                    $$->AddVarDecls($3, $5);
+                                }
     |    VAR idlist ':' type
-                                { }
+                                { $$ = new cVarDeclsNode($2, $4); }
     |    idlist ':' type
-                                { }
+                                { $$ = new cVarDeclsNode($1, $3); }
 
 type: TYPE_ID
                                 { $$ = $1->GetDecl(); }
@@ -246,25 +270,25 @@ statements: statements statement
 statement: variable ASSIGN expr ';'
                                 { $$ = new cAssignNode($1, $3); }
     |   IF expr THEN statement
-                                { }
+                                { $$ = new cIfNode($2, $4, nullptr); }
     |   IF expr THEN statement ELSE statement
-                                { }
+                                { $$ = new cIfNode($2, $4, $6); }
     |   REPEAT statements UNTIL expr ';'
                                 { }
     |   WHILE expr DO statement
-                                { }
+                                { $$ = new cWhileNode($2, $4); }
     |   FOR IDENTIFIER ASSIGN expr TO expr DO statement
                                 {}
     |   FOR IDENTIFIER ASSIGN expr DOWNTO expr DO statement
                                 {}
     |   IDENTIFIER '(' exprList ')' ';'
-                                { }
+                                { $$ = new cProcCallNode($1, $3); }
     |   IDENTIFIER ';'
-                                { }
+                                { $$ = new cProcCallNode($1, nullptr); }
     |   WRITE '(' exprList ')' ';'
                                 { $$ = new cWriteNode($3); }
     |   OPEN statements CLOSE
-                                { }
+                                { $$ = new cCompoundStmtNode($2); }
     |   NIL ';'
                                 { $$ = new cNilNode(); }
     |   error ';'

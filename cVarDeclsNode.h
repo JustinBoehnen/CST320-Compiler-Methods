@@ -26,11 +26,23 @@ public:
         }
     }
 
+    void AddVarDecls(cIdListNode* ids, cBaseTypeNode* type)
+    {
+        int index = 0;
+        cSymbol* temp = ids->GetSymbol(index);
+
+        while(temp != nullptr)
+        {
+            AddChild(new cVarDeclNode(type, temp));
+            temp = ids->GetSymbol(++index);
+        }
+    }
+
     void AddVarDecls(cVarDeclsNode* decls)
     {
         AddAllChildren(decls);
     }
 
-    virtual string NodeType() { return string("var-decls"); }
+    virtual string NodeType() { return string("var_decls"); }
     virtual void Visit(cVisitor* visitor) { visitor->Visit(this); }
 };

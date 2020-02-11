@@ -76,14 +76,15 @@ public:
         return (*_stack[_scope])[key];
     }
 
+    cSymbol* Insert(cSymbol* sym)
+    {
+        (*_stack[_scope])[sym->GetName()] = sym;
+        return sym;
+    }
+
 private:
     int _scope;
     vector<unordered_map<string, cSymbol*>*> _stack;
-
-    void Insert(cSymbol* sym)
-    {
-        (*_stack[_scope])[sym->GetName()] = sym;
-    }
 
     void InitializeKeywords()
     {
@@ -100,6 +101,8 @@ private:
         keyword = new cSymbol("begin", OPEN);
         Insert(keyword);
         keyword = new cSymbol("end", CLOSE);
+        Insert(keyword);
+        keyword = new cSymbol("while", WHILE);
         Insert(keyword);
         keyword = new cSymbol("write", WRITE);
         Insert(keyword);

@@ -70,7 +70,7 @@ int Find(){
 
     cSymbol* temp = g_symbolTable.GlobalFind(str);
     if(!temp)
-        yylval.symbol = g_symbolTable.Insert(str);
+        yylval.symbol = new cSymbol(str); // new g_symbolTable.Insert(str);
     else
         yylval.symbol = temp;
 

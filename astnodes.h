@@ -30,3 +30,8 @@
 #include "cVarDeclNode.h"
 #include "cVarDeclsNode.h"
 #include "cAssignNode.h"
+#include "cIfNode.h"
+#include "cCompoundStmtNode.h"
+#include "cWhileNode.h"
+#include "cProcDeclNode.h"
+#include "cProcCallNode.h"
