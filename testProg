@@ -1,0 +1,23 @@
+
+PROGRAM ast ;
+    CONST
+        rconst = 5.5;
+
+    TYPE
+        arr = ARRAY [1..5] of integer;
+    VAR
+        ivar : integer;
+        rvar : real;
+        avar : arr;
+    FUNCTION func(param : integer) : integer;
+    BEGIN
+        func := param * 2;
+    END;
+BEGIN
+    ivar := 5000;
+    rvar := 123.8;
+    ivar := 10 * func(10);
+    avar[3] := 10;
+END.
+
+

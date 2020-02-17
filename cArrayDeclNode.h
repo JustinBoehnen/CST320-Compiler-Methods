@@ -1,4 +1,8 @@
 #pragma once
+//*******************************************
+// Author: Justin Boehnen
+// Purpose: Array Declarations
+//*******************************************
 #include "cDeclNode.h"
 #include "cDeclsNode.h"
 #include "cSymbolTable.h"

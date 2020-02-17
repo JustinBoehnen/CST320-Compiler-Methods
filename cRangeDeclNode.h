@@ -1,4 +1,8 @@
 #pragma once
+//*******************************************
+// Author: Justin Boehnen
+// Purpose: number range ast node
+//*******************************************
 
 #include "cAstNode.h"
 #include "cExprNode.h"

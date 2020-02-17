@@ -1,4 +1,8 @@
 #pragma once
+//*******************************************
+// Author: Justin Boehnen
+// Purpose: Procedure Declarations ast node
+//*******************************************
 
 #include "cDeclNode.h"
 #include "cSymbolTable.h"
