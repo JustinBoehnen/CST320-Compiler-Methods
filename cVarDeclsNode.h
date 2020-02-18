@@ -43,6 +43,7 @@ public:
         AddAllChildren(decls);
     }
 
+    int GetNumChildren() { return NumChildren(); }
     virtual string NodeType() { return string("var_decls"); }
     virtual void Visit(cVisitor* visitor) { visitor->Visit(this); }
 };

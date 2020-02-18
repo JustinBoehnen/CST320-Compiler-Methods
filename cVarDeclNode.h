@@ -14,11 +14,24 @@ class cVarDeclNode : public cDeclNode
 public:
     cVarDeclNode(cDeclNode* type, cSymbol* sym) : cDeclNode()
     {
-        if(g_symbolTable.GlobalFind(sym->GetName()))
-            sym = new cSymbol(sym->GetName());
+        std::string name = sym->GetName();
         
+        if(g_symbolTable.GlobalFind(name))
+        {
+            if(g_symbolTable.LocalFind(name))
+                SemanticParseError("Symbol " + name + " already exists in current scope");
+            else
+            {
+                sym = new cSymbol(name);
+                g_symbolTable.Insert(sym); 
+            }
+        }
+        else
+            g_symbolTable.Insert(sym);
+        
+        sym->SetDecl(this);
         AddChild(type);
-        AddChild(g_symbolTable.Insert(sym));
+        AddChild(sym);
     }
 
     virtual string NodeType() { return string("var_decl"); }

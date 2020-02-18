@@ -6,6 +6,11 @@
 //
 // Author: Justin Boehnen
 
+#define CHECK_ERROR() { if (g_semanticErrorHappened) \
+    { g_semanticErrorHappened = false; } }
+#define PROP_ERROR() { if (g_semanticErrorHappened) \
+    { g_semanticErrorHappened = false; YYERROR;} }
+
 #include <iostream>
 #include "lex.h"
 #include "astnodes.h"
@@ -29,6 +34,7 @@
     cDeclsNode*     decls_node;
     cDeclNode*      decl_node;
     cIdListNode*    id_list_node;
+    cVarDeclNode*   var_decl_node;
     cVarDeclsNode*  var_decls_node;
     cBaseTypeNode*  base_type_node;
     cVarExprNode*   var_expr_node;
@@ -42,6 +48,7 @@
 
     cAstNode *yyast_root;
     extern cSymbolTable g_symbolTable;
+    static bool g_semanticErrorHappened;
 %}
 
 %start  program
@@ -92,13 +99,13 @@
 %type <var_decls_node> vardecl;
 %type <decls_node> procdecls
 %type <var_decls_node> paramSpec
-%type <decl_node> procdecl
+%type <proc_decl_node> procdecl
 %type <var_decls_node> parlist
 %type <id_list_node> idlist
 %type <expr_node> func_call
 %type <func_decl_node> funcProto
 %type <func_decl_node> funcHeader
-%type <symbol> procHeader
+%type <proc_decl_node> procHeader
 %type <stmts_node> statements
 %type <stmt_node> statement
 %type <expr_node> expr
@@ -171,14 +178,14 @@ singleType:  IDENTIFIER '=' recHeader recorddef ';'
                                 { 
                                     $1->SetIsType(true);
                                     $$ = new cRecordDeclNode($1, $4); 
-                                    $1->SetDecl($$);
+                                    //$1->SetDecl($$);
                                 }
 
         | IDENTIFIER '=' ARRAY '[' rangeList ']' OF type ';'
                                 { 
                                     $1->SetIsType(true);
                                     $$ = new cArrayDeclNode($1, $8->GetDecl(), $5);
-                                    $1->SetDecl($$);
+                                    //$1->SetDecl($$);
                                 }
 
 rangeList: rangeList ',' range
@@ -205,9 +212,12 @@ vardecl: vardecl onevar
 onevar: goodvar ';'
                                 { $$ = $1; }
         | error ';'
-                                { $$ = nullptr; }
+                                { }
 goodvar: idlist ':' type
-                                { $$ = new cVarDeclsNode($1, $3->GetDecl()); }
+                                { 
+                                    $$ = new cVarDeclsNode($1, $3->GetDecl()); 
+                                    PROP_ERROR();
+                                }
 procdecls: procdecls procdecl
                                 { 
                                     if($1 == nullptr)
@@ -222,19 +232,29 @@ procdecls: procdecls procdecl
 
 procdecl: procHeader paramSpec ';' block ';'
                                 { 
-                                    $$ = new cProcDeclNode($1,$2,$4); 
+                                    $$ = $1;
+                                    $$->AddParameters($2);
+                                    $$->AddBlock($4);
+                                    CHECK_ERROR(); 
                                 }
         |  procHeader paramSpec ';' FORWARD ';'
-                                { $$ = new cProcDeclNode($1, $2, nullptr); }
+                                { 
+                                    $$ = $1; 
+                                    $$->AddParameters($2);
+                                    g_symbolTable.DecreaseScope();
+                                    CHECK_ERROR();
+                                }
         |  funcProto ';' block ';'
                                 { 
                                     $$ = $1;
-                                    $$->AddBody($3);
+                                    $$->AddBlock($3);
+                                    CHECK_ERROR();
                                 }
         |  funcProto ';' FORWARD ';'
                                 { 
                                     $$ = $1;
                                     g_symbolTable.DecreaseScope();
+                                    CHECK_ERROR();
                                 }
         |  error ';' block ';'
                                 { }
@@ -242,7 +262,7 @@ procdecl: procHeader paramSpec ';' block ';'
                                 { }
 procHeader: PROCEDURE IDENTIFIER 
                                 { 
-                                    $$ = $2;
+                                    $$ = new cProcDeclNode($2);
                                     g_symbolTable.IncreaseScope();
                                 }
 funcHeader: FUNCTION IDENTIFIER
@@ -337,7 +357,7 @@ exprList: exprList ',' oneExpr
         | oneExpr
                                 { $$ = new cExprListNode($1); }
         | /* empty */
-                                { }
+                                { $$ = nullptr; }
 oneExpr: expr
                                 { $$ = $1; }
 
@@ -421,4 +441,11 @@ int yyerror(const char *msg)
         << yytext << " on line " << yylineno << "\n";
 
     return 0;
+}
+
+void SemanticParseError(std::string error)
+{
+    std::cout << "ERROR: " << error << " on line " << yylineno << "\n";
+    g_semanticErrorHappened = true;
+    yynerrs++;
 }

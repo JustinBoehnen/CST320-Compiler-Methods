@@ -20,4 +20,10 @@ class cDeclNode : public cAstNode
         {
             AddChild(body);
         }
+
+        virtual bool IsReal() {return false;}
+        virtual bool IsInt() {return false;}
+        virtual bool IsChar() {return false;}
+        virtual bool IsType() {return false;}
+        virtual bool IsFunc() {return false;}
 };

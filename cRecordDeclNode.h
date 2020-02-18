@@ -13,6 +13,7 @@ public:
         if(g_symbolTable.GlobalFind(header->GetName()))
             header = new cSymbol(header->GetName());
         
+        header->SetDecl(this);
         AddChild(g_symbolTable.Insert(header));
         AddChild(decls);
     }

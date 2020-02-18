@@ -21,11 +21,22 @@ using std::string;
 class cSymbol : public cAstNode
 {
     public:
-        cSymbol(string name, int id=-1) 
-            : cAstNode(), _tokenType(IDENTIFIER)
+        cSymbol(string name, int id=-1, bool isType=false) 
+            : cAstNode(), _isType(isType)
         {
+            if(id == -1)
+            {
+                m_id = ++nextId;
+                _tokenType = IDENTIFIER;
+            }
+            else 
+            {
+                m_id = id;
+                _tokenType = m_id;
+            }
+            
             m_name = name;
-
+            /*
             if(id == -1)
                 m_id = ++nextId; 
             else
@@ -50,8 +61,9 @@ class cSymbol : public cAstNode
                         break;
                 } 
             }
+            */
         }
-
+        
         // Used to print cSymbols
         string ToString()
         {

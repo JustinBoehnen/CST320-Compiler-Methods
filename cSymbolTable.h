@@ -89,7 +89,19 @@ private:
     void InitializeKeywords()
     {
         cSymbol* keyword;
-       
+        
+        keyword = new cSymbol("integer", INTEGER, true);
+        keyword->SetDecl(new cBaseTypeNode("integer", 4, false));
+        Insert(keyword);
+        
+        keyword = new cSymbol("real", REAL, true);
+        keyword->SetDecl(new cBaseTypeNode("real", 8, true));
+        Insert(keyword);
+        
+        keyword = new cSymbol("char", CHAR, true);
+        keyword->SetDecl(new cBaseTypeNode("char", 1, false));   
+        Insert(keyword);
+        
         keyword = new cSymbol("program", PROGRAM);
         Insert(keyword);
         keyword = new cSymbol("procedure", PROCEDURE);
@@ -147,12 +159,6 @@ private:
         keyword = new cSymbol("and", AND);
         Insert(keyword);
         keyword = new cSymbol("not", NOT);
-        Insert(keyword);
-        keyword = new cSymbol("integer", INTEGER);
-        Insert(keyword);
-        keyword = new cSymbol("real", REAL);
-        Insert(keyword);
-        keyword = new cSymbol("char", CHAR);
-        Insert(keyword);
+        Insert(keyword);    
     }
 };

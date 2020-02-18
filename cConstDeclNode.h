@@ -14,6 +14,7 @@ public:
         if(g_symbolTable.GlobalFind(name->GetName()))
             name = new cSymbol(name->GetName());
 
+        name->SetDecl(this);
         AddChild(g_symbolTable.Insert(name));
         AddChild(value);
     }
