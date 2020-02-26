@@ -1,0 +1,30 @@
+<program><sym id="4" name="test5a" /><block><decls><array><sym id="5" name="arraytype" /><type name="integer" size="4" isFloat="0" /><decls><range start="0" end = "5" /></decls>
+</array>
+<var_decl><type name="integer" size="4" isFloat="0" /><sym id="6" name="vvv" /></var_decl>
+<var_decl><type name="real" size="8" isFloat="1" /><sym id="7" name="rrr" /></var_decl>
+<var_decl><array><sym id="5" name="arraytype" /><type name="integer" size="4" isFloat="0" /><decls><range start="0" end = "5" /></decls>
+</array>
+<sym id="8" name="arr" /></var_decl>
+</decls>
+<stmts><assign><varref><sym id="6" name="vvv" /></varref>
+<INTEGER value="5" /></assign>
+<assign><varref><sym id="6" name="vvv" /></varref>
+<varref><sym id="8" name="arr" /><exprList><REAL value="5.500000" /></exprList>
+</varref>
+</assign>
+<assign><varref><sym id="6" name="vvv" /></varref>
+<varref><sym id="8" name="arr" /><exprList><varref><sym id="7" name="rrr" /></varref>
+</exprList>
+</varref>
+</assign>
+<assign><varref><sym id="8" name="arr" /><exprList><varref><sym id="7" name="rrr" /></varref>
+</exprList>
+</varref>
+<INTEGER value="7" /></assign>
+<assign><varref><sym id="8" name="arr" /><exprList><REAL value="8.200000" /></exprList>
+</varref>
+<INTEGER value="5" /></assign>
+</stmts>
+</block>
+</program>
+

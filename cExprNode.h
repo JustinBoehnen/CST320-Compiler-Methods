@@ -12,9 +12,12 @@
 //
 
 #include "cStmtNode.h"
+#include "cDeclNode.h"
 
 class cExprNode : public cStmtNode
 {
     public:
         cExprNode() : cStmtNode() {}
+
+        virtual cDeclNode* GetDecl() = 0;
 };

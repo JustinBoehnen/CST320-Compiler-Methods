@@ -86,6 +86,9 @@ public:
         }
     }
 
+    virtual string GetName() { return dynamic_cast<cSymbol*>(GetChild(0))->GetName(); }
+    virtual int GetNumParams() { return dynamic_cast<cVarDeclsNode*>(GetChild(1))
+                                    ->GetNumChildren(); }
     virtual cVarDeclsNode* GetParameters() { return dynamic_cast<cVarDeclsNode*>(GetChild(1));}
     virtual cBlockNode* GetBlock() { return dynamic_cast<cBlockNode*>(GetChild(2)); }
     virtual bool IsFunc() { return true; }

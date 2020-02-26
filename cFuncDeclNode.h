@@ -20,7 +20,7 @@ public:
 
         if(func)
         {
-            if(func->GetType() != nullptr && func->GetType() != type)
+            if(func->GetDecl() != nullptr && func->GetDecl() != type)
                 SemanticParseError(name 
                         + " previsously declared with different return type");
             else
@@ -35,7 +35,14 @@ public:
     }
     
     
-    cDeclNode* GetType() { return dynamic_cast<cDeclNode*>(GetChild(1)); }
+    virtual cDeclNode* GetDecl() { return dynamic_cast<cDeclNode*>(GetChild(1)); }
+    virtual int GetNumParams() 
+    { 
+        if(GetChild(2) != nullptr)
+            return dynamic_cast<cVarDeclsNode*>(GetChild(2))->GetNumChildren(); 
+        else
+            return 0;
+    }
     virtual cVarDeclsNode* GetParameters() { return dynamic_cast<cVarDeclsNode*>(GetChild(2)); }
     virtual cBlockNode* GetBlock() { return dynamic_cast<cBlockNode*>(GetChild(3)); }
     virtual bool IsFunc() { return true; }

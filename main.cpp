@@ -17,6 +17,7 @@
 #include "lex.h"
 #include "astnodes.h"
 #include "pascalparse.h"
+#include "cSemantics.h"
 
 // define global variables
 cSymbolTable g_symbolTable;
@@ -62,20 +63,23 @@ int main(int argc, char **argv)
     result = yyparse();
     if (yyast_root != nullptr && result == 0 && yynerrs == 0)
     {
-        output << yyast_root->ToString() << std::endl;
-    } else {
-            output << yynerrs << " Errors in compile\n";
+        cSemantics* semantics = new cSemantics();
+        semantics->VisitAllNodes(yyast_root);
+
+        if (yynerrs == 0)
+            output << yyast_root->ToString() << std::endl;
     }
 
-    if (result == 0 && yylex() != 0)
-    {
-        std::cout << "Junk at end of program\n";
-    }
+    if(yyast_root == nullptr || result != 0 || yynerrs != 0)
+        output << yynerrs << " Errors in compile\n";
+
+    //if (result == 0 && yylex() != 0)
+    //     std::cout << "Junk at end of program\n";
 
     // close output and fixup cout
     // If these aren't done, you may get a segfault on program exit
     output.close();
     std::cout.rdbuf(cout_buf);
 
-    return result;
+    return result + yynerrs;
 }

@@ -17,6 +17,10 @@ public:
         AddChild(expr);
     }
 
+    virtual cDeclNode* GetDecl() 
+    { 
+        return dynamic_cast<cExprNode*>(GetChild(1))->GetDecl(); 
+    }
     virtual string NodeType() { return string("unaryExpr"); }
     virtual void Visit(cVisitor* visitor) { visitor->Visit(this); }
 };

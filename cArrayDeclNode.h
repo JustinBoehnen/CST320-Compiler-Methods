@@ -23,7 +23,10 @@ public:
         AddChild(type);
         AddChild(decls);
     }
-    
-        virtual string NodeType() { return string("array"); }
-        virtual void Visit(cVisitor* visitor) { visitor->Visit(this); }
+   
+    virtual cDeclsNode* GetDecls() { return dynamic_cast<cDeclsNode*>(GetChild(2)); }
+    virtual string GetName() { return dynamic_cast<cSymbol*>(GetChild(0))->GetName(); } 
+    virtual bool IsArray() { return true; }
+    virtual string NodeType() { return string("array"); }
+    virtual void Visit(cVisitor* visitor) { visitor->Visit(this); }
 };

@@ -34,6 +34,9 @@ public:
         AddChild(sym);
     }
 
+    virtual string GetName() { return dynamic_cast<cDeclNode*>(GetChild(0))->GetName(); }
     virtual string NodeType() { return string("var_decl"); }
     virtual void Visit(cVisitor* visitor) { visitor->Visit(this); }
+    virtual cDeclNode* GetDecl() { return dynamic_cast<cDeclNode*>(GetChild(0)); }
+    virtual bool IsVar() { return true; }
 };

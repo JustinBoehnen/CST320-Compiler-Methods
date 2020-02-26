@@ -7,6 +7,8 @@
 #include "cAstNode.h"
 #include "cExprNode.h"
 
+extern cSymbolTable g_symbolTable;
+
 class cRealExprNode : public cExprNode
 {
 public:
@@ -21,6 +23,10 @@ public:
     }
     virtual string NodeType() { return string("REAL"); }
     virtual void Visit(cVisitor* visitor) { visitor->Visit(this); }
+    virtual cDeclNode* GetDecl()
+    {
+        return g_symbolTable.GlobalFind("real")->GetDecl();       
+    }
 protected:
     double m_value;
 };
