@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<program>
+  <sym id="4" name="test1"/>
+  <block size="16">
+    <decls>
+      <var_decl size="8" offset="0">
+        <type name="real" size="8" isFloat="1"/>
+        <sym id="5" name="a"/>
+      </var_decl>
+      <var_decl size="4" offset="8">
+        <type name="integer" size="4" isFloat="0"/>
+        <sym id="6" name="b"/>
+      </var_decl>
+      <var_decl size="1" offset="12">
+        <type name="char" size="1" isFloat="0"/>
+        <sym id="7" name="c"/>
+      </var_decl>
+    </decls>
+    <stmts>
+      <WRITE>
+        <exprList>
+          <INTEGER value="1"/>
+        </exprList>
+      </WRITE>
+    </stmts>
+  </block>
+</program>

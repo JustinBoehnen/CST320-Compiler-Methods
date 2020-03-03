@@ -1,0 +1,166 @@
+<?xml version="1.0"?>
+<program>
+  <sym id="4" name="test3c"/>
+  <block size="480">
+    <decls>
+      <array size="20" rowsizes="4" startindexes="1">
+        <sym id="5" name="arr1"/>
+        <type name="integer" size="4" isFloat="0"/>
+        <decls>
+          <range start="1" end="5"/>
+        </decls>
+      </array>
+      <array size="450" rowsizes="1 5 90" startindexes="2 3 0">
+        <sym id="6" name="arr2"/>
+        <type name="char" size="1" isFloat="0"/>
+        <decls>
+          <range start="2" end="6"/>
+          <range start="3" end="20"/>
+          <range start="0" end="4"/>
+        </decls>
+      </array>
+      <var_decl size="4" offset="0">
+        <type name="integer" size="4" isFloat="0"/>
+        <sym id="7" name="a"/>
+      </var_decl>
+      <var_decl size="20" offset="4">
+        <array size="20" rowsizes="4" startindexes="1">
+          <sym id="5" name="arr1"/>
+          <type name="integer" size="4" isFloat="0"/>
+          <decls>
+            <range start="1" end="5"/>
+          </decls>
+        </array>
+        <sym id="8" name="b"/>
+      </var_decl>
+      <var_decl size="4" offset="24">
+        <type name="integer" size="4" isFloat="0"/>
+        <sym id="9" name="c"/>
+      </var_decl>
+      <var_decl size="450" offset="28">
+        <array size="450" rowsizes="1 5 90" startindexes="2 3 0">
+          <sym id="6" name="arr2"/>
+          <type name="char" size="1" isFloat="0"/>
+          <decls>
+            <range start="2" end="6"/>
+            <range start="3" end="20"/>
+            <range start="0" end="4"/>
+          </decls>
+        </array>
+        <sym id="10" name="d"/>
+      </var_decl>
+    </decls>
+    <stmts>
+      <assign>
+        <varref size="4" offset="4" rowsizes="4" startindexes="1">
+          <sym id="8" name="b"/>
+          <exprList>
+            <varref size="4" offset="4" rowsizes="4" startindexes="1">
+              <sym id="8" name="b"/>
+              <exprList>
+                <INTEGER value="3"/>
+              </exprList>
+            </varref>
+          </exprList>
+        </varref>
+        <INTEGER value="5"/>
+      </assign>
+      <assign>
+        <varref size="4" offset="0">
+          <sym id="7" name="a"/>
+        </varref>
+        <varref size="4" offset="24">
+          <sym id="9" name="c"/>
+        </varref>
+      </assign>
+      <assign>
+        <varref size="4" offset="0">
+          <sym id="7" name="a"/>
+        </varref>
+        <varref size="4" offset="4" rowsizes="4" startindexes="1">
+          <sym id="8" name="b"/>
+          <exprList>
+            <varref size="4" offset="24">
+              <sym id="9" name="c"/>
+            </varref>
+          </exprList>
+        </varref>
+      </assign>
+      <assign>
+        <varref size="4" offset="0">
+          <sym id="7" name="a"/>
+        </varref>
+        <expr>
+          <varref size="4" offset="4" rowsizes="4" startindexes="1">
+            <sym id="8" name="b"/>
+            <exprList>
+              <varref size="4" offset="24">
+                <sym id="9" name="c"/>
+              </varref>
+            </exprList>
+          </varref>
+          <op value="+"/>
+          <varref size="4" offset="4" rowsizes="4" startindexes="1">
+            <sym id="8" name="b"/>
+            <exprList>
+              <varref size="4" offset="4" rowsizes="4" startindexes="1">
+                <sym id="8" name="b"/>
+                <exprList>
+                  <varref size="4" offset="4" rowsizes="4" startindexes="1">
+                    <sym id="8" name="b"/>
+                    <exprList>
+                      <varref size="4" offset="24">
+                        <sym id="9" name="c"/>
+                      </varref>
+                    </exprList>
+                  </varref>
+                </exprList>
+              </varref>
+            </exprList>
+          </varref>
+        </expr>
+      </assign>
+      <assign>
+        <varref size="4" offset="4" rowsizes="4" startindexes="1">
+          <sym id="8" name="b"/>
+          <exprList>
+            <varref size="4" offset="0">
+              <sym id="7" name="a"/>
+            </varref>
+          </exprList>
+        </varref>
+        <expr>
+          <varref size="4" offset="0">
+            <sym id="7" name="a"/>
+          </varref>
+          <op value="+"/>
+          <varref size="4" offset="24">
+            <sym id="9" name="c"/>
+          </varref>
+        </expr>
+      </assign>
+      <assign>
+        <varref size="4" offset="4" rowsizes="4" startindexes="1">
+          <sym id="8" name="b"/>
+          <exprList>
+            <varref size="4" offset="0">
+              <sym id="7" name="a"/>
+            </varref>
+          </exprList>
+        </varref>
+        <varref size="1" offset="28" rowsizes="1 5 90" startindexes="2 3 0">
+          <sym id="10" name="d"/>
+          <exprList>
+            <INTEGER value="3"/>
+            <varref size="4" offset="0">
+              <sym id="7" name="a"/>
+            </varref>
+            <varref size="4" offset="24">
+              <sym id="9" name="c"/>
+            </varref>
+          </exprList>
+        </varref>
+      </assign>
+    </stmts>
+  </block>
+</program>

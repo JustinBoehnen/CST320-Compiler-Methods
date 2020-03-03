@@ -34,6 +34,14 @@ public:
         AddChild(sym);
     }
 
+    virtual string AttributesToString()
+    {
+        return " size=\"" 
+            + std::to_string(m_size) 
+            + "\" offset=\"" 
+            + std::to_string(m_offset) 
+            + "\"";
+    }
     virtual string GetName() { return dynamic_cast<cDeclNode*>(GetChild(0))->GetName(); }
     virtual string NodeType() { return string("var_decl"); }
     virtual void Visit(cVisitor* visitor) { visitor->Visit(this); }

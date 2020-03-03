@@ -10,6 +10,7 @@
 
 #include "cAstNode.h"
 #include "cDeclNode.h"
+#include "cRangeDeclNode.h"
 
 class cDeclsNode : public cAstNode
 {
@@ -25,6 +26,15 @@ class cDeclsNode : public cAstNode
 
         // Add another decl to the list
         void AddDecl(cDeclNode *decl) { AddChild(decl); }
+
+        int HasDecls(){ return HasChildren(); }
+
+        int NumDecls(){ return NumChildren(); }
+
+        cRangeDeclNode* GetRangeAt(int index)
+        {
+            return dynamic_cast<cRangeDeclNode*>(GetChild(index));
+        }
 
         int GetNumChildren() { return NumChildren(); }
         virtual string NodeType() { return string("decls"); }

@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<program>
+  <sym id="4" name="test3"/>
+  <block size="28">
+    <decls>
+      <array size="20" rowsizes="4" startindexes="1">
+        <sym id="5" name="arr1"/>
+        <type name="integer" size="4" isFloat="0"/>
+        <decls>
+          <range start="1" end="5"/>
+        </decls>
+      </array>
+      <var_decl size="4" offset="0">
+        <type name="integer" size="4" isFloat="0"/>
+        <sym id="6" name="a"/>
+      </var_decl>
+      <var_decl size="20" offset="4">
+        <array size="20" rowsizes="4" startindexes="1">
+          <sym id="5" name="arr1"/>
+          <type name="integer" size="4" isFloat="0"/>
+          <decls>
+            <range start="1" end="5"/>
+          </decls>
+        </array>
+        <sym id="7" name="b"/>
+      </var_decl>
+      <var_decl size="4" offset="24">
+        <type name="integer" size="4" isFloat="0"/>
+        <sym id="8" name="c"/>
+      </var_decl>
+    </decls>
+    <stmts>
+      <assign>
+        <varref size="4" offset="0">
+          <sym id="6" name="a"/>
+        </varref>
+        <varref size="4" offset="24">
+          <sym id="8" name="c"/>
+        </varref>
+      </assign>
+    </stmts>
+  </block>
+</program>

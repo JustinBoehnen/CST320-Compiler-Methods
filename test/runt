@@ -1,0 +1,16 @@
+./pascal test/$1.pas out.xml
+RETVAL=$?
+if [ $RETVAL -ne 0 ] 
+then
+  cp out.xml out2.xml
+else
+  xmllint --format out.xml -o out2.xml
+  RETVAL=$?
+  [ $RETVAL -ne 0 ] && echo $1 FAILED ----- && exit
+fi
+
+diff -qbwB out2.xml test/$1.correct
+RETVAL=$?
+[ $RETVAL -eq 0 ] && echo $1 PASSED
+[ $RETVAL -ne 0 ] && echo $1 FAILED -----
+exit $RETVAL

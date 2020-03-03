@@ -1,0 +1,5 @@
+#!/bin/bash
+for test in 1 2 3a 3b 3c 4a 4b 4c; do
+    test/runt test$test
+done
+

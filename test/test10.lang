@@ -1,0 +1,18 @@
+{
+    array int[10] int10 ;
+
+    struct
+    {
+        int aa;
+        int bb;
+    } a_struct;
+
+    array a_struct[5] s;
+
+    int10 i10;
+    s s5;
+
+    s5[1].aa = i10[2];
+}
+
+

@@ -14,12 +14,17 @@
 class cDeclNode : public cAstNode
 {
     public:
-        cDeclNode() : cAstNode() {}
+        cDeclNode() : cAstNode() { m_offset = 0;}
 
         void AddBody(cAstNode* body)
         {
             AddChild(body);
         }
+
+        int GetSize() {return m_size;}
+        int GetOffset() {return m_offset;}
+        void SetSize(int size) {m_size = size;}
+        void SetOffset(int offset) {m_offset = offset;}
 
         virtual string GetName() { return string("");}
         virtual cDeclNode* GetDecl() { return nullptr; }
@@ -31,4 +36,8 @@ class cDeclNode : public cAstNode
         virtual bool IsFunc() {return false;}
         virtual bool IsVar() {return false;}
         virtual bool IsArray() {return false;}
+    
+    protected:
+        int m_size;
+        int m_offset;
 };

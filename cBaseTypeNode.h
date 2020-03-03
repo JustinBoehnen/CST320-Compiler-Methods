@@ -10,8 +10,8 @@ class cBaseTypeNode : public cDeclNode
 {
 public:
     cBaseTypeNode(string name, int size, bool isFloat)
-        : cDeclNode(), m_name(name), m_size(size), m_isFloat(isFloat)
-    { }
+        : cDeclNode(), m_name(name), m_isFloat(isFloat)
+    { m_size = size;}
 
     virtual string AttributesToString()
     {
@@ -33,6 +33,5 @@ public:
     virtual bool IsChar() { return m_name == "char"; }
 private:
     string m_name;
-    int m_size;
     bool m_isFloat;
 };

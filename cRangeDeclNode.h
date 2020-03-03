@@ -27,6 +27,8 @@ public:
     }
     virtual string NodeType() { return string("range"); }
     virtual void Visit(cVisitor* visitor) { visitor->Visit(this); }
+    int GetStart() { return _left; }
+    int GetEnd() { return _right; }
 
 protected:
     int _left;
