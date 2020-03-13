@@ -38,6 +38,7 @@ class cIntExprNode : public cExprNode
             else
                 return g_symbolTable.GlobalFind("integer")->GetDecl();
         }
+        int GetValue(){return m_value;}
     protected:
         int m_value;        // value of integer constant (literal)
 };

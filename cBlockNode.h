@@ -32,6 +32,8 @@ class cBlockNode : public cStmtNode
             return " size=\"" + std::to_string(m_size) + "\"";
         }
 
+        virtual cDeclsNode* GetDecls() { return dynamic_cast<cDeclsNode*>(GetChild(0)); }
+        virtual cStmtsNode* GetStmts() { return dynamic_cast<cStmtsNode*>(GetChild(1)); }
         virtual string NodeType() { return string("block"); }
         virtual void Visit(cVisitor *visitor) { visitor->Visit(this); }
 

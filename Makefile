@@ -11,7 +11,8 @@ COPTS=-Wall -g -c  -O0 -std=c++11
 OBJS=main.o \
 	 pascallex.o \
 	 pascalparse.o \
-	 cVisitor.o
+	 cVisitor.o \
+	 emit.o
 
 all: pascal
 
@@ -33,6 +34,9 @@ clean:
 
 main.o: main.cpp pascalparse.c pascallex.c 
 	g++ $(COPTS) main.cpp -o $@
+
+emit.o: emit.h emit.cpp
+	g++ $(COPTS) emit.cpp -o emit.o
 
 pascallex.o: pascallex.c
 	g++ $(COPTS) -Wno-sign-compare $? -o $@

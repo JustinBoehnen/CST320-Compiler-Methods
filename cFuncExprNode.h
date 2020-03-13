@@ -33,6 +33,7 @@ public:
         return dynamic_cast<cSymbol*>(GetChild(0))->GetDecl();
     }
     void SetParamSize(int size){m_paramSize = size;};
+    int GetParamSize(){return m_paramSize;}
 private:
     int m_paramSize;
 };

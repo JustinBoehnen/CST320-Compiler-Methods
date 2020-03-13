@@ -19,6 +19,7 @@
 #include "pascalparse.h"
 #include "cSemantics.h"
 #include "cComputeSize.h"
+#include "cCodeGen.h"
 
 // define global variables
 cSymbolTable g_symbolTable;
@@ -70,7 +71,8 @@ int main(int argc, char **argv)
         if (yynerrs == 0){
             cComputeSize* size = new cComputeSize();
             size->VisitAllNodes(yyast_root);
-            output << yyast_root->ToString() << std::endl;
+            cCodeGen* gen = new cCodeGen("pascalout.sl");
+            gen->VisitAllNodes(yyast_root);
         }
     }
 

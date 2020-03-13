@@ -18,4 +18,7 @@ public:
 
     virtual string NodeType() { return string("if"); }
     virtual void Visit(cVisitor* visitor) { visitor->Visit(this); }
+    cExprNode* GetExpr() { return dynamic_cast<cExprNode*>(GetChild(0));}
+    cStmtNode* GetIf() { return dynamic_cast<cStmtNode*>(GetChild(1));}
+    cStmtNode* GetElse() { return dynamic_cast<cStmtNode*>(GetChild(2));}
 };

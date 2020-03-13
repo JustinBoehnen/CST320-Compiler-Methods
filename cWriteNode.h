@@ -24,6 +24,7 @@ class cWriteNode : public cStmtNode
             AddChild(exprList);
         }
 
+        virtual cExprListNode* GetList() {return dynamic_cast<cExprListNode*>(GetChild(0));}
         virtual string NodeType() { return string("WRITE"); }
         virtual void Visit(cVisitor *visitor) { visitor->Visit(this); }
 };

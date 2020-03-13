@@ -36,6 +36,9 @@ public:
         else
             return g_symbolTable.GlobalFind("char")->GetDecl();
     }
+    cExprNode* GetLeft(){return dynamic_cast<cExprNode*>(GetChild(0));}
+    cExprNode* GetRight(){return dynamic_cast<cExprNode*>(GetChild(2));}
+    int GetOp(){return dynamic_cast<cOpNode*>(GetChild(1))->GetOp();}
     virtual string NodeType() { return string("expr"); }
     virtual void Visit(cVisitor* visitor) { visitor->Visit(this); }
 };
