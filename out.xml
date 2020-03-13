@@ -1,35 +1,31 @@
-<program><sym id="4" name="test4a" /><block size="44"><decls><var_decl size="4" offset="0"><type name="integer" size="4" isFloat="0" /><sym id="5" name="a" /></var_decl>
-<proc><sym id="6" name="foo" /><var_decls><var_decl size="4" offset="20"><type name="integer" size="4" isFloat="0" /><sym id="7" name="par1" /></var_decl>
-<var_decl size="8" offset="24"><type name="real" size="8" isFloat="1" /><sym id="8" name="par2" /></var_decl>
-<var_decl size="1" offset="32"><type name="char" size="1" isFloat="0" /><sym id="9" name="par3" /></var_decl>
+<program><sym id="4" name="test4a" /><block size="4"><decls><var_decl size="4" offset="0"><type name="integer" size="4" isFloat="0" /><sym id="5" name="a" /></var_decl>
+<proc><sym id="6" name="foo" /><var_decls size="16"><var_decl size="4" offset="-12"><type name="integer" size="4" isFloat="0" /><sym id="7" name="par1" /></var_decl>
+<var_decl size="8" offset="-16"><type name="real" size="8" isFloat="1" /><sym id="8" name="par2" /></var_decl>
+<var_decl size="1" offset="-24"><type name="char" size="1" isFloat="0" /><sym id="9" name="par3" /></var_decl>
 </var_decls>
-<var_decls><var_decl size="4" offset="20"><type name="integer" size="4" isFloat="0" /><sym id="7" name="par1" /></var_decl>
-<var_decl size="8" offset="24"><type name="real" size="8" isFloat="1" /><sym id="8" name="par2" /></var_decl>
-<var_decl size="1" offset="32"><type name="char" size="1" isFloat="0" /><sym id="9" name="par3" /></var_decl>
-</var_decls>
-<block size="44"><decls><var_decl size="1" offset="33"><type name="char" size="1" isFloat="0" /><sym id="11" name="a" /></var_decl>
-<var_decl size="1" offset="34"><type name="char" size="1" isFloat="0" /><sym id="10" name="b" /></var_decl>
-<var_decl size="4" offset="36"><type name="integer" size="4" isFloat="0" /><sym id="12" name="c" /></var_decl>
-<var_decl size="4" offset="40"><type name="integer" size="4" isFloat="0" /><sym id="13" name="d" /></var_decl>
+<block size="12"><decls><var_decl size="1" offset="0"><type name="char" size="1" isFloat="0" /><sym id="11" name="a" /></var_decl>
+<var_decl size="1" offset="1"><type name="char" size="1" isFloat="0" /><sym id="10" name="b" /></var_decl>
+<var_decl size="4" offset="4"><type name="integer" size="4" isFloat="0" /><sym id="12" name="c" /></var_decl>
+<var_decl size="4" offset="8"><type name="integer" size="4" isFloat="0" /><sym id="13" name="d" /></var_decl>
 </decls>
-<stmts><assign><varref size="8" offset="24"><sym id="8" name="par2" /></varref>
-<expr><expr><expr><expr><expr><varref size="4" offset="20"><sym id="7" name="par1" /></varref>
-<op value="+" /><varref size="1" offset="33"><sym id="11" name="a" /></varref>
+<stmts><assign><varref size="8" offset="-16"><sym id="8" name="par2" /></varref>
+<expr><expr><expr><expr><expr><varref size="4" offset="-12"><sym id="7" name="par1" /></varref>
+<op value="+" /><varref size="1" offset="0"><sym id="11" name="a" /></varref>
 </expr>
-<op value="+" /><varref size="1" offset="34"><sym id="10" name="b" /></varref>
+<op value="+" /><varref size="1" offset="1"><sym id="10" name="b" /></varref>
 </expr>
-<op value="+" /><varref size="4" offset="36"><sym id="12" name="c" /></varref>
+<op value="+" /><varref size="4" offset="4"><sym id="12" name="c" /></varref>
 </expr>
-<op value="+" /><varref size="4" offset="40"><sym id="13" name="d" /></varref>
+<op value="+" /><varref size="4" offset="8"><sym id="13" name="d" /></varref>
 </expr>
-<op value="+" /><varref size="1" offset="32"><sym id="9" name="par3" /></varref>
+<op value="+" /><varref size="1" offset="-24"><sym id="9" name="par3" /></varref>
 </expr>
 </assign>
 </stmts>
 </block>
 </proc>
 </decls>
-<stmts><procCall><sym id="6" name="foo" /><exprList><varref size="4" offset="0"><sym id="5" name="a" /></varref>
+<stmts><procCall paramSize="16"><sym id="6" name="foo" /><exprList><varref size="4" offset="0"><sym id="5" name="a" /></varref>
 <expr><REAL value="3.200000" /><op value="*" /><varref size="4" offset="0"><sym id="5" name="a" /></varref>
 </expr>
 <INTEGER value="5" /></exprList>

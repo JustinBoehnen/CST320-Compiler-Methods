@@ -59,8 +59,6 @@ public:
                     proc->GetParameters()->GetNumChildren() != params->GetNumChildren())
                 SemanticParseError(name
                         + " redeclared with different number of parameters");            
-            else
-                AddChild(params);
         }
 
         AddChild(params);
@@ -84,6 +82,15 @@ public:
             
             AddChild(block);
         }
+    }
+
+    virtual string AttributesToString()
+    {
+        if(m_size != 0)
+            return" size=\"" + std::to_string(m_size) 
+                + "\" offset=\"" + std::to_string(m_offset) + "\"";
+        else
+            return string("");
     }
 
     virtual string GetName() { return dynamic_cast<cSymbol*>(GetChild(0))->GetName(); }

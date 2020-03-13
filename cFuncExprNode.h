@@ -12,6 +12,11 @@ public:
         AddChild(params);
     }
     
+    virtual string AttributesToString()
+    {
+        return " paramSize=\"" + std::to_string(m_paramSize) + "\"";
+    }
+
     virtual string GetName() { return dynamic_cast<cSymbol*>(GetChild(0))->GetName(); }
     virtual int GetNumParams() 
     {   
@@ -27,4 +32,7 @@ public:
     {
         return dynamic_cast<cSymbol*>(GetChild(0))->GetDecl();
     }
+    void SetParamSize(int size){m_paramSize = size;};
+private:
+    int m_paramSize;
 };

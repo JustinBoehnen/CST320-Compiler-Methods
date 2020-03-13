@@ -43,6 +43,14 @@ public:
         AddAllChildren(decls);
     }
 
+    virtual string AttributesToString()
+    {
+        return " size=\"" + std::to_string(m_size) + "\"";
+    }
+
+    int GetSize(){return m_size;}
+    void SetSize(int size){m_size = size;}
+
     cVarDeclNode* GetParamAt(int index) 
     { 
         return dynamic_cast<cVarDeclNode*>(GetChild(index)); 
@@ -50,4 +58,7 @@ public:
     int GetNumChildren() { return NumChildren(); }
     virtual string NodeType() { return string("var_decls"); }
     virtual void Visit(cVisitor* visitor) { visitor->Visit(this); }
+
+private:
+    int m_size;
 };

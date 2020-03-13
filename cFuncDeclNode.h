@@ -34,7 +34,6 @@ public:
         }
     }
     
-    
     virtual cDeclNode* GetDecl() { return dynamic_cast<cDeclNode*>(GetChild(1)); }
     virtual int GetNumParams() 
     { 

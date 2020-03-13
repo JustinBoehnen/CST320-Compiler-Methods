@@ -28,7 +28,22 @@ public:
         {
             cArrayDeclNode* array = dynamic_cast<cArrayDeclNode*>(GetDecl()->GetDecl());
 
-            ret += array->RowSizesAsString() + array->StartIndexesAsString();
+            string row = " rowsizes=\"";
+            string ind = " startindexes=\"";
+
+            for(int i = 0; i < array->GetSizeOfRowSize() - 1; i++)
+            {
+                row += std::to_string(array->GetRowSizeAt(i)) + " ";
+            }
+            row += std::to_string(array->GetRowSizeAt(array->GetSizeOfRowSize() - 1)) + "\"";
+
+            for(int i = 0; i < array->GetSizeOfStartIndex() - 1; i++)
+            {
+                ind += std::to_string(array->GetStartIndexAt(i)) + " ";
+            }
+            ind += std::to_string(array->GetStartIndexAt(array->GetSizeOfStartIndex() - 1)) + "\"";
+            
+            ret += row + ind;
         }
 
         return ret;
